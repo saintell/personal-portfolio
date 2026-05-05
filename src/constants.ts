@@ -49,6 +49,12 @@ export const TECH_STACK: TechCategory[] = [
 
 export const PROJECTS: Project[] = [
   {
+    title: "Automatización Logística",
+    description: "Sistema desktop modular que automatiza la normalización de direcciones con IA (Gemini API), geocodificación y asignación de zonas.",
+    category: "Desktop / AI / Logistics",
+    tags: ["Gemini API", "Geocoding API", "SQLite", "Python"]
+  },
+  {
     title: "Asistente Digital AI",
     description: "Aplicación de IA (React + Python/FastAPI + OpenAI) con contexto de voz, envío y síntesis de audio, y avatar interpretativo.",
     category: "AI / Web",
