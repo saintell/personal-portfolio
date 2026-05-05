@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
+import { PERSONAL_INFO } from '../constants';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -10,7 +11,7 @@ const Footer: React.FC = () => {
     <footer className="border-t border-white/10 py-12 relative bg-black">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="text-center md:text-left">
-          <h3 className="text-lg font-bold text-white">Santiago Pineda</h3>
+          <h3 className="text-lg font-bold text-white">{PERSONAL_INFO.name}</h3>
           <p className="text-secondary text-sm mt-1">
             © {new Date().getFullYear()} - Construido con React & Tailwind.
           </p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Home, Layers, Folder, User, Mail } from 'lucide-react';
+import { Home, Layers, Folder, User, MessageCircle } from 'lucide-react';
 import { gsap } from 'gsap';
 
 import { throttle } from '../utils/throttle';
@@ -133,10 +133,12 @@ const Navbar: React.FC = () => {
           })}
           <div className="w-px h-6 bg-white/10 mx-1 hidden md:block" />
           <a
-            href="mailto:santipinra@gmail.com"
-            className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 hover:scale-110 transition-all hidden md:block"
+            href="https://wa.link/2dcjtp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-full bg-[#25D366] text-white hover:bg-[#20bd5a] hover:scale-110 transition-all hidden md:block"
           >
-            <Mail className="w-4 h-4" />
+            <MessageCircle className="w-4 h-4" />
           </a>
         </nav>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { EXPERIENCE } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
+import SpotlightCard from './SpotlightCard';
 
 const Experience: React.FC = () => {
   return (
@@ -16,9 +17,7 @@ const Experience: React.FC = () => {
         <div className="space-y-4">
           {EXPERIENCE.map((item, index) => (
             <RevealOnScroll key={index} delay={index * 100}>
-              <div
-                className="group relative p-6 md:p-8 rounded-3xl border border-white/5 bg-surface hover:bg-surface-hover hover:border-white/10 transition-all duration-300"
-              >
+              <SpotlightCard className="p-6 md:p-8">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                   <div>
                     <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
@@ -42,7 +41,7 @@ const Experience: React.FC = () => {
                     EXP
                   </div>
                 )}
-              </div>
+              </SpotlightCard>
             </RevealOnScroll>
           ))}
         </div>

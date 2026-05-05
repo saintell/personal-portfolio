@@ -5,24 +5,46 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 
 const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
   'React 18': { slug: 'react', color: '#61DAFB' },
-  'Angular 17-19': { slug: 'angular', color: '#DD0031' },
+  'Angular 17-20': { slug: 'angular', color: '#DD0031' },
   'TypeScript': { slug: 'typescript', color: '#3178C6' },
+  'JavaScript': { slug: 'javascript', color: '#F7DF1E' },
+  'HTML': { slug: 'html5', color: '#E34F26' },
+  'CSS': { slug: 'css3', color: '#1572B6', customUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original-wordmark.svg' },
+  'Tailwind': { slug: 'tailwindcss', color: '#06B6D4' },
   'Next.js': { slug: 'nextdotjs', color: '#ffffff' },
   'Material UI': { slug: 'mui', color: '#007FFF' },
   'PrimeNG': { slug: 'primeng', color: '#E82A36' },
-  'Python (FastAPI, Django)': { slug: 'python', color: '#3776AB' },
-  'Node.js (NestJS)': { slug: 'nodedotjs', color: '#339933' },
+  'Python': { slug: 'python', color: '#3776AB' },
+  'Django': { slug: 'django', color: '#092E20' },
+  'FastAPI': { slug: 'fastapi', color: '#009688' },
+  'Node.js': { slug: 'nodedotjs', color: '#339933' },
   'PHP (Laravel)': { slug: 'php', color: '#777BB4' },
   '.NET': { slug: 'dotnet', color: '#512BD4' },
   'Electron': { slug: 'electron', color: '#47848F' },
   'PyQt5': { slug: 'qt', color: '#41CD52' },
   'Docker': { slug: 'docker', color: '#2496ED' },
   'Azure DevOps': { slug: 'azuredevops', color: '#0078D7', customUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuredevops/azuredevops-original.svg' },
-  'Git Flow': { slug: 'git', color: '#F05032' },
+  'Git': { slug: 'git', color: '#F05032' },
   'WebSockets': { slug: 'socketdotio', color: '#ffffff' },
+  'PostgreSQL': { slug: 'postgresql', color: '#4169E1' },
+  'MySQL': { slug: 'mysql', color: '#4479A1' },
+  'SQL Server': { slug: 'microsoftsqlserver', color: '#CC292B', customUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg' },
+  'MongoDB': { slug: 'mongodb', color: '#47A248' },
+  'Pandas': { slug: 'pandas', color: '#150458' },
+  'Postman': { slug: 'postman', color: '#FF6C37' }
 };
 
-const TechIconItem = ({ tech, mapping }: { tech: string; mapping: {slug: string, color: string, customUrl?: string} | undefined }) => {
+const TechIconItem = ({ 
+  tech, 
+  mapping,
+  onMouseEnter,
+  onMouseLeave
+}: { 
+  tech: string; 
+  mapping: {slug: string, color: string, customUrl?: string} | undefined;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) => {
   const [imgError, setImgError] = useState(false);
   
   let iconUrl = null;
@@ -35,7 +57,11 @@ const TechIconItem = ({ tech, mapping }: { tech: string; mapping: {slug: string,
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 w-20 md:w-24 group cursor-default">
+    <div 
+      className="flex flex-col items-center gap-4 w-20 md:w-24 group cursor-default"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-300">
          {iconUrl ? (
             <img 
@@ -60,6 +86,7 @@ const TechIconItem = ({ tech, mapping }: { tech: string; mapping: {slug: string,
 const TechStack: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const scrollNext = () => {
     if (scrollRef.current) {
@@ -98,6 +125,8 @@ const TechStack: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isHovered) return;
+
     const timer = setInterval(() => {
       if (scrollRef.current) {
         const nextIndex = (activeIndex + 1) % TECH_STACK.length;
@@ -107,7 +136,7 @@ const TechStack: React.FC = () => {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [activeIndex]);
+  }, [activeIndex, isHovered]);
 
   return (
     <section id="stack" className="min-h-[100dvh] flex flex-col justify-center relative bg-background">
@@ -172,7 +201,13 @@ const TechStack: React.FC = () => {
                   {/* Tech Grid */}
                   <div className="flex flex-wrap justify-center flex-1 gap-x-8 gap-y-12">
                     {category.items.map((tech) => (
-                      <TechIconItem key={tech} tech={tech} mapping={iconMapping[tech]} />
+                      <TechIconItem 
+                        key={tech} 
+                        tech={tech} 
+                        mapping={iconMapping[tech]} 
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      />
                     ))}
                   </div>
                </div>

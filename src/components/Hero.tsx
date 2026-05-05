@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { ArrowRight, Linkedin } from 'lucide-react';
+import { ArrowRight, Linkedin, Download } from 'lucide-react';
 import { gsap } from 'gsap';
 import ThreeBackground from './ThreeBackground';
 import { PERSONAL_INFO } from '../constants';
@@ -188,14 +188,21 @@ const Hero: React.FC = () => {
             ref={descRef}
             className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-10 font-light"
           >
-            Desarrollador Full-Stack apasionado por crear experiencias digitales fluidas.
-            Transformo ideas complejas en código limpio y funcional.
+            {PERSONAL_INFO.subtitle}
           </p>
 
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4">
             <a
-              href="#projects"
+              href="/CV_SantiagoAndresPineda.pdf"
+              download
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              Descargar CV
+              <Download className="ml-2 w-4 h-4 group-hover:translate-y-1 transition-transform" />
+            </a>
+            <a
+              href="#projects"
+              className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
             >
               Ver Proyectos
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
