@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { TECH_STACK } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, X } from 'lucide-react';
+import { TechItem } from '../types';
 
 const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
   'React 18': { slug: 'react', color: '#61DAFB' },
@@ -38,12 +39,14 @@ const TechIconItem = ({
   tech, 
   mapping,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  onClick
 }: { 
-  tech: string; 
+  tech: TechItem; 
   mapping: {slug: string, color: string, customUrl?: string} | undefined;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onClick?: () => void;
 }) => {
   const [imgError, setImgError] = useState(false);
   
@@ -57,29 +60,30 @@ const TechIconItem = ({
   }
 
   return (
-    <div 
-      className="flex flex-col items-center gap-4 w-20 md:w-24 group cursor-default"
+    <button 
+      className="flex flex-col items-center gap-4 w-20 md:w-24 group cursor-pointer focus:outline-none"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={onClick}
     >
       <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-300">
          {iconUrl ? (
             <img 
               src={iconUrl} 
-              alt={tech} 
+              alt={tech.name} 
               className="w-10 h-10 md:w-14 md:h-14 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 drop-shadow-none group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
               onError={() => setImgError(true)}
             />
           ) : (
             <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-white/5 flex items-center justify-center grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-              <span className="text-xl font-bold text-white">{tech[0]}</span>
+              <span className="text-xl font-bold text-white">{tech.name[0]}</span>
             </div>
           )}
       </div>
       <span className="text-xs text-secondary font-mono tracking-wide text-center group-hover:text-white transition-colors duration-300">
-        {tech}
+        {tech.name}
       </span>
-    </div>
+    </button>
   );
 };
 
@@ -87,6 +91,7 @@ const TechStack: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [selectedTech, setSelectedTech] = useState<TechItem | null>(null);
 
   const scrollNext = () => {
     if (scrollRef.current) {
@@ -125,7 +130,7 @@ const TechStack: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered || selectedTech) return;
 
     const timer = setInterval(() => {
       if (scrollRef.current) {
@@ -136,7 +141,7 @@ const TechStack: React.FC = () => {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [activeIndex, isHovered]);
+  }, [activeIndex, isHovered, selectedTech]);
 
   return (
     <section id="stack" className="min-h-[100dvh] flex flex-col justify-center relative bg-background">
@@ -202,11 +207,12 @@ const TechStack: React.FC = () => {
                   <div className="flex flex-wrap justify-center flex-1 gap-x-8 gap-y-12">
                     {category.items.map((tech) => (
                       <TechIconItem 
-                        key={tech} 
+                        key={tech.name} 
                         tech={tech} 
-                        mapping={iconMapping[tech]} 
+                        mapping={iconMapping[tech.name]} 
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
+                        onClick={() => setSelectedTech(tech)}
                       />
                     ))}
                   </div>
@@ -225,6 +231,41 @@ const TechStack: React.FC = () => {
           />
         ))}
       </div>
+
+      {/* Tech Description Modal */}
+      {selectedTech && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setSelectedTech(null)}
+        >
+          <div 
+            className="bg-surface border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedTech(null)}
+              className="absolute top-4 right-4 text-secondary hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                {iconMapping[selectedTech.name]?.customUrl ? (
+                  <img src={iconMapping[selectedTech.name].customUrl} alt={selectedTech.name} className="w-6 h-6 grayscale-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
+                ) : iconMapping[selectedTech.name] ? (
+                  <img src={`https://cdn.simpleicons.org/${iconMapping[selectedTech.name].slug}/${iconMapping[selectedTech.name].color.replace('#', '')}`} alt={selectedTech.name} className="w-6 h-6 grayscale-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
+                ) : (
+                  <span className="text-lg font-bold text-white">{selectedTech.name[0]}</span>
+                )}
+              </div>
+              <h4 className="text-xl font-bold text-white">{selectedTech.name}</h4>
+            </div>
+            <p className="text-secondary leading-relaxed">
+              {selectedTech.description}
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

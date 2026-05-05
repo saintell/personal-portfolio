@@ -2,12 +2,12 @@ import { LucideIcon } from 'lucide-react';
 
 export interface TechItem {
   name: string;
-  icon?: string;
+  description: string;
 }
 
 export interface TechCategory {
   title: string;
-  items: string[];
+  items: TechItem[];
   icon: LucideIcon;
 }
 

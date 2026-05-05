@@ -23,27 +23,59 @@ export const TECH_STACK: TechCategory[] = [
   {
     title: "Frontend",
     icon: Code2,
-    items: ["React 18", "Angular 17-20", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind", "Material UI", "PrimeNG"]
+    items: [
+      { name: "React 18", description: "Construcción de interfaces de usuario interactivas, como el Asistente Digital AI y dashboards de ETL." },
+      { name: "Angular 17-20", description: "Desarrollo de portales empresariales modulares, como el API MOR para gestión de usuarios interactivos." },
+      { name: "TypeScript", description: "Tipado estático en el frontend y backend (Node) para asegurar escalabilidad y calidad de código." },
+      { name: "JavaScript", description: "Desarrollo dinámico, integración con APIs del navegador y scripts de validación complejos." },
+      { name: "HTML", description: "Maquetación semántica y accesible para las distintas aplicaciones web." },
+      { name: "CSS", description: "Estilización avanzada, con variables CSS, grid/flexbox y animaciones keyframes." },
+      { name: "Tailwind", description: "Estilización utilitaria ágil, usada intensamente en mis proyectos para lograr diseños responsive y modernos." },
+      { name: "Material UI", description: "Creación de interfaces estandarizadas en aplicaciones web empresariales." },
+      { name: "PrimeNG", description: "Implementación de tablas avanzadas y componentes en Angular." }
+    ]
   },
   {
     title: "Backend",
     icon: Server,
-    items: ["Python", "FastAPI", "Django", "Node.js", "PHP (Laravel)", ".NET"]
+    items: [
+      { name: "Python", description: "Lógica de negocio, procesamiento de datos pesados (ETL) e integraciones con IA (Gemini, OpenAI)." },
+      { name: "FastAPI", description: "Desarrollo de APIs RESTful de alto rendimiento y asíncronas para web sockets." },
+      { name: "Django", description: "Aplicaciones monolíticas y sistemas robustos con administración y ORM integrado." },
+      { name: "Node.js", description: "Servicios Backend y automatizaciones con JavaScript en el lado del servidor." },
+      { name: "PHP (Laravel)", description: "Desarrollo estructurado de Backend, migraciones, controladores y APIs." },
+      { name: ".NET", description: "Integración en ecosistema empresarial para seguimiento de materiales y facturación." }
+    ]
   },
   {
     title: "Data & ETL",
     icon: Database,
-    items: ["PostgreSQL", "SQL Server", "MySQL", "MongoDB", "Pandas"]
+    items: [
+      { name: "PostgreSQL", description: "Manejo de base de datos relacional para servicios críticos y sistemas escalables." },
+      { name: "SQL Server", description: "Gestión de bases de datos empresariales de alto rendimiento e integración en entornos Microsoft." },
+      { name: "MySQL", description: "Implementación de bases de datos ágiles para aplicaciones transaccionales." },
+      { name: "MongoDB", description: "Almacenamiento NoSQL para persistencia de eventos, logs y datos desestructurados." },
+      { name: "Pandas", description: "Transformación, limpieza de datos y generación de reportes integrados en el flujo ETL con Python." }
+    ]
   },
   {
     title: "Desktop & Realtime",
     icon: Monitor,
-    items: ["Electron", "PyQt5", "WebSockets"]
+    items: [
+      { name: "Electron", description: "Soporte multiplataforma para aplicaciones como ETL Tools, fusionando tecnologías web con el entorno OS." },
+      { name: "PyQt5", description: "Construcción de aplicaciones desktop nativas como Kiosko Seguro y control de hardware/UI." },
+      { name: "WebSockets", description: "Comunicación bidireccional de baja latencia para asistentes de voz y monitorización en tiempo real." }
+    ]
   },
   {
     title: "Herramientas",
     icon: Wrench,
-    items: ["Docker", "Azure DevOps", "Git", "Postman"]
+    items: [
+      { name: "Docker", description: "Containerización de servicios, orquestando entornos de desarrollo y despliegues predecibles." },
+      { name: "Azure DevOps", description: "Gestión de repositorios, CI/CD pipelines y tableros ágiles para control de tareas." },
+      { name: "Git", description: "Versionamiento de código fuente y colaboración mediante ramas." },
+      { name: "Postman", description: "Pruebas de endpoints REST, diseño y documentación interactiva de APIs." }
+    ]
   }
 ];
 
