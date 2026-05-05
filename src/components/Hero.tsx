@@ -135,6 +135,8 @@ const Hero: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+
+
   // Split text into spans for animation
   const splitText = (text: string) => {
     return text.split('').map((char, i) => (
@@ -157,16 +159,16 @@ const Hero: React.FC = () => {
       <ThreeBackground />
 
       {/* Background Blobs for specific GSAP animation */}
-      <div ref={blob1Ref} className="absolute top-1/4 left-10 w-64 h-64 bg-green-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
-      <div ref={blob2Ref} className="absolute bottom-1/4 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
+      <div ref={blob1Ref} className="absolute top-1/4 left-10 w-64 h-64 bg-accent/10 rounded-full blur-3xl -z-10 pointer-events-none" />
+      <div ref={blob2Ref} className="absolute bottom-1/4 right-10 w-80 h-80 bg-accent/5 rounded-full blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 w-full flex-1 flex flex-col justify-center">
         <div className="flex flex-col items-center text-center">
           <div ref={badgeRef}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-secondary text-xs font-mono mb-8 backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
               </span>
               Disponible para proyectos
             </div>
@@ -174,7 +176,7 @@ const Hero: React.FC = () => {
 
           <h1
             ref={nameRef}
-            className="text-[12vw] sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 perspective-1000 leading-tight"
+            className="text-[10vw] sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 perspective-1000 leading-tight"
           >
             <span className="block overflow-hidden pb-4">
               {splitText('Santiago')}

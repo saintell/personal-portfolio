@@ -30,10 +30,10 @@ const Projects: React.FC = () => {
 
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="mb-4">
-                    <span className="text-xs font-medium text-blue-400 mb-2 block tracking-wider uppercase">
+                    <span className="text-xs font-medium text-accent mb-2 block tracking-wider uppercase">
                       {project.category}
                     </span>
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-accent transition-colors">
                       {project.title}
                     </h3>
                   </div>

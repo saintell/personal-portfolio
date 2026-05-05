@@ -10,12 +10,12 @@ const Footer: React.FC = () => {
         {/* CTA Section */}
         <div className="mb-16 p-8 md:p-10 rounded-3xl bg-[#0a0a0a] border border-[#1f3a2d]/60 relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-6 group">
           {/* Subtle gradient background for the CTA */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-green-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-all duration-700 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-700 pointer-events-none"></div>
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-all duration-700 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-all duration-700 pointer-events-none"></div>
           
           <div className="flex items-center gap-6 relative z-10">
             <div className="hidden md:flex shrink-0">
-              <Send className="w-10 h-10 text-emerald-400 stroke-[1.5]" />
+              <Send className="w-10 h-10 text-accent stroke-[1.5]" />
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">¿Tienes un proyecto en mente?</h2>

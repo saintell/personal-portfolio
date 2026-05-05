@@ -192,8 +192,8 @@ const TechStack: React.FC = () => {
                <div className="w-full max-w-5xl flex flex-col md:flex-row gap-12 md:gap-16 items-center md:items-center">
                   
                   {/* Category Title Title */}
-                  <div className="text-center md:text-left shrink-0">
-                    <h3 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-br from-white to-white/20 pb-2 whitespace-nowrap">
+                  <div className="text-center md:text-left shrink-0 min-w-40">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-br from-white to-white/20 pb-2 whitespace-nowrap">
                       {category.title}
                     </h3>
                   </div>

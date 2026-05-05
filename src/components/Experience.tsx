@@ -20,7 +20,7 @@ const Experience: React.FC = () => {
               <SpotlightCard className="p-6 md:p-8">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-accent transition-colors">
                       {item.role}
                     </h3>
                     <p className="text-white/80 font-medium">

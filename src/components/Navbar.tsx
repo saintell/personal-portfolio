@@ -119,12 +119,15 @@ const Navbar: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`relative px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-2 group ${isActive
-                  ? 'text-black bg-white'
-                  : 'text-secondary hover:text-white hover:bg-white/10'
+                className={`relative px-4 py-2 transition-all duration-300 flex items-center gap-2 group ${isActive
+                  ? 'text-white'
+                  : 'text-secondary hover:text-white hover:bg-white/5 rounded-full'
                   }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'stroke-2' : 'stroke-[1.5]'}`} />
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-accent" />
+                )}
+                <Icon className={`w-4 h-4 ${isActive ? 'stroke-2 text-accent md:hidden' : 'stroke-[1.5] hidden md:block'}`} />
                 <span className={`text-sm font-medium ${isActive ? 'block' : 'hidden md:block'}`}>
                   {link.name}
                 </span>

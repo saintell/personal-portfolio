@@ -17,7 +17,7 @@ export default {
         border: '#27272a', // Zinc 800
         primary: '#ffffff',
         secondary: '#a1a1aa', // Zinc 400
-        accent: '#3b82f6', // Blue 500 (Subtle)
+        accent: '#00d287', // Vibrant Green
       },
       animation: {
         'blob': 'blob 7s infinite',
