@@ -127,7 +127,7 @@ const Navbar: React.FC = () => {
                 {isActive && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-accent" />
                 )}
-                <Icon className={`w-4 h-4 ${isActive ? 'stroke-2 text-accent md:hidden' : 'stroke-[1.5] hidden md:block'}`} />
+                <Icon className={`w-4 h-4 md:block ${isActive ? 'stroke-2 text-accent' : 'stroke-[1.5]'}`} />
                 <span className={`text-sm font-medium ${isActive ? 'block' : 'hidden md:block'}`}>
                   {link.name}
                 </span>
