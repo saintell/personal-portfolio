@@ -195,7 +195,7 @@ const Hero: React.FC = () => {
 
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4">
             <a
-              href="/CV_SantiagoAndresPineda.pdf"
+              href="/CV – Santiago Andrés Pineda.pdf"
               download
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
             >
