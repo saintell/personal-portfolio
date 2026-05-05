@@ -1,0 +1,27 @@
+import { LucideIcon } from 'lucide-react';
+
+export interface TechItem {
+  name: string;
+  icon?: string;
+}
+
+export interface TechCategory {
+  title: string;
+  items: string[];
+  icon: LucideIcon;
+}
+
+export interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  category: string;
+}
+
+export interface Experience {
+  role: string;
+  company: string;
+  period: string;
+  description: string;
+  type: 'work' | 'education';
+}
