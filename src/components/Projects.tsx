@@ -8,7 +8,7 @@ const Projects: React.FC = () => {
     <section id="projects" className="py-24 bg-surface/30">
       <div className="max-w-6xl mx-auto px-6">
         <RevealOnScroll>
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
             <div>
               <h2 className="text-3xl font-bold text-white mb-2">Proyectos</h2>
               <p className="text-secondary">Casos de estudio y desarrollos recientes.</p>
