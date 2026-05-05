@@ -2,7 +2,7 @@
   "name": "santiago-pineda-portfolio",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://saintell.github.io/portfolio/",
+  "homepage": "https://saintell.github.io/personal-portfolio/",
   "type": "module",
   "scripts": {
     "dev": "vite",
