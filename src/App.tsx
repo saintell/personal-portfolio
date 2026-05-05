@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
-import ScrollThread from './components/ScrollThread';
 import Hero from './components/Hero';
 import TechStack from './components/TechStack';
 import Projects from './components/Projects';
@@ -22,8 +21,6 @@ const App: React.FC = () => {
 
         {/* Global Noise Overlay */}
         <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.03] bg-noise"></div>
-
-        <ScrollThread />
 
         <Navbar />
         <main className="relative z-10">

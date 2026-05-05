@@ -152,7 +152,7 @@ const Hero: React.FC = () => {
     <section
       ref={sectionRef}
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
+      className="min-h-[100dvh] flex items-center justify-center relative overflow-hidden pt-24 pb-32"
     >
       <ThreeBackground />
 
@@ -160,7 +160,7 @@ const Hero: React.FC = () => {
       <div ref={blob1Ref} className="absolute top-1/4 left-10 w-64 h-64 bg-green-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
       <div ref={blob2Ref} className="absolute bottom-1/4 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-6 w-full">
+      <div className="max-w-5xl mx-auto px-6 w-full flex-1 flex flex-col justify-center">
         <div className="flex flex-col items-center text-center">
           <div ref={badgeRef}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-secondary text-xs font-mono mb-8 backdrop-blur-sm">
@@ -174,12 +174,12 @@ const Hero: React.FC = () => {
 
           <h1
             ref={nameRef}
-            className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 perspective-1000"
+            className="text-[12vw] sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 perspective-1000 leading-tight"
           >
-            <span className="block overflow-hidden">
+            <span className="block overflow-hidden pb-4">
               {splitText('Santiago')}
             </span>
-            <span className="block text-secondary overflow-hidden">
+            <span className="block text-secondary overflow-hidden pb-4">
               {splitText('Pineda.')}
             </span>
           </h1>
@@ -227,9 +227,9 @@ const Hero: React.FC = () => {
       {/* Scroll Indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="uppercase tracking-widest font-mono text-[10px] text-white/30">
+        <span className="uppercase tracking-widest font-mono text-[10px] text-white/30 animate-bounce">
           Scroll
         </span>
         <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent"></div>

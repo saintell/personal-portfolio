@@ -106,7 +106,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div
-        className="fixed top-0 left-0 w-full h-32 z-40 bg-transparent"
+        className="fixed top-0 left-0 w-full h-12 z-40 bg-transparent"
         onMouseEnter={() => setIsVisible(true)}
       />
       <div ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
