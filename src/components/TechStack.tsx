@@ -4,7 +4,7 @@ import RevealOnScroll from './RevealOnScroll';
 import { ChevronRight, ChevronLeft, X } from 'lucide-react';
 import { TechItem } from '../types';
 
-const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
+export const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
   'React 18': { slug: 'react', color: '#61DAFB' },
   'Angular 17-20': { slug: 'angular', color: '#DD0031' },
   'TypeScript': { slug: 'typescript', color: '#3178C6' },
@@ -32,7 +32,12 @@ const iconMapping: Record<string, { slug: string; color: string; customUrl?: str
   'SQL Server': { slug: 'microsoftsqlserver', color: '#CC292B', customUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg' },
   'MongoDB': { slug: 'mongodb', color: '#47A248' },
   'Pandas': { slug: 'pandas', color: '#150458' },
-  'Postman': { slug: 'postman', color: '#FF6C37' }
+  'Postman': { slug: 'postman', color: '#FF6C37' },
+  'Gemini API': { slug: 'googlegemini', color: '#8E75B2' },
+  'Geocoding API': { slug: 'googlemaps', color: '#4285F4' },
+  'SQLite': { slug: 'sqlite', color: '#003B57' },
+  'OpenAI': { slug: 'openai', color: '#412991' },
+  'Watchdog': { slug: 'python', color: '#3776AB' }
 };
 
 const TechIconItem = ({ 
