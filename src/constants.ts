@@ -81,44 +81,58 @@ export const TECH_STACK: TechCategory[] = [
 
 export const PROJECTS: Project[] = [
   {
+    title: "AvanzaEmpleo",
+    description: "Plataforma de empleo con módulos de candidatos, empresas y administración de ofertas laborales.",
+    longDescription: "Desarrollé funcionalidades full stack en React y Python. Implementé inicio de sesión, recuperación de contraseñas, registro de usuarios, creación/edición de ofertas, búsqueda y filtrado. Mejoré perfiles de candidatos y empresas con carga de imágenes y campos dinámicos.",
+    category: "Full Stack / Web",
+    tags: ["React 18", "Python"]
+  },
+  {
     title: "Automatización Logística",
     description: "Sistema desktop modular que automatiza la normalización de direcciones con IA (Gemini API), geocodificación y asignación de zonas.",
+    longDescription: "Desarrollé un sistema de escritorio en Python para procesar lotes logísticos desde Excel. Integra Gemini API, API de geocodificación y SQLite. Automatiza tareas eliminando reprocesos con caché y motores de reglas, segmentando direcciones por zonas.",
     category: "Desktop / AI / Logistics",
     tags: ["Gemini API", "Geocoding API", "SQLite", "Python"]
   },
   {
     title: "Asistente Digital AI",
     description: "Aplicación de IA (React + Python/FastAPI + OpenAI) con contexto de voz, envío y síntesis de audio, y avatar interpretativo.",
+    longDescription: "Arquitectura frontend en React, backend Python/FastAPI. Integración con OpenAI y WebSockets para mantener procesamiento al instante. Manejo de audio, síntesis de respuestas en tiempo real y renderizado de un avatar interactivo con D-ID.",
     category: "AI / Web",
     tags: ["React 18", "FastAPI", "OpenAI", "WebSockets"]
   },
   {
     title: "Kiosko Seguro",
     description: "App de escritorio interactiva que limita acceso a URLs y reporta actividad al backend en tiempo real.",
+    longDescription: "Aplicación de escritorio desarrollada en PyQt5 equipada con WebSockets y backend en Python. Diseñada para operar en modo kiosko, limita el acceso únicamente a URLs preestablecidas y reporta constantemente la actividad del usuario.",
     category: "Desktop / Security",
     tags: ["PyQt5", "WebSockets", "Python"]
   },
   {
     title: "Smart Energy",
     description: "Servicio de detección de cambios en logs vía Python Watchdog que procesa y envía eventos a un dashboard de reportes.",
+    longDescription: "Servicio implementado en Python que usa Watchdog para monitorear archivos de logs locales. Procesa y categoriza eventos en tiempo real para visualizarlos en un dashboard construido sobre React.",
     category: "Monitoring",
     tags: ["React 18", "Python", "Watchdog"]
   },
   {
     title: "ETL Tools",
     description: "UI de escritorio sin backend para procesos ETL y automatización, con visualización de estado de servidor y MongoDB.",
+    longDescription: "Aplicación desktop con React y Electron guiada por scripts en Python para la carga y reemplazo de archivos ETL. Facilita la observación del estado de servidores y la monitorización de las bases de datos MongoDB.",
     category: "DevTools",
     tags: ["React 18", "Electron", "Python", "MongoDB"]
   },
   {
     title: "API MOR",
     description: "Frontend para portal de gestión de usuarios empresariales y asignación dinámica de roles en la organización.",
+    longDescription: "Módulos empresariales desarrollados junto con Angular y backend .NET. Provee interfaces interactivas para gestionar usuarios y múltiples roles permitiendo un control de acceso robusto a lo largo de la organización.",
     category: "Enterprise",
     tags: ["Angular 17-20"]
   },
   {
     title: "Clientes Interactivos & Balanceados",
     description: "Sistemas distribuidos para el seguimiento del estado de envíos, gestión de entradas de material, transformación y salida de producto.",
+    longDescription: "Sistemas integrados desarrollados con Angular y .NET. Fungen como un punto de logística crucial para gestionar la mercancía, registrar cambios en inventarios, gestionar lotes de transformación y realizar seguimientos detallados.",
     category: "Enterprise / Logistics",
     tags: ["Angular 17-20", ".NET"]
   }
@@ -126,11 +140,11 @@ export const PROJECTS: Project[] = [
 
 export const EXPERIENCE: Experience[] = [
   {
-    role: "Desarrollador de Software",
-    company: "PCA Ingeniería",
-    period: "Nov 2021 – May 2026 | Cali, Colombia",
-    description: "Desarrollo frontend y backend para apps web y escritorio. Integración de OpenAI API, WebSockets. Diseño de componentes UI performantes, pipelines ETL y despliegue usando Docker.",
-    type: "work"
+    role: "Tecnología en Sistemas de Información",
+    company: "Universidad del Valle",
+    period: "2016 – 2021 | Palmira, Colombia",
+    description: "Programa académico culminado focalizado en ingeniería de software y programación.",
+    type: "education"
   },
   {
     role: "Soporte TI / Desarrollador Jr.",
@@ -140,17 +154,31 @@ export const EXPERIENCE: Experience[] = [
     type: "work"
   },
   {
+    role: "Desarrollador de Software",
+    company: "PCA Ingeniería",
+    period: "Nov 2021 – May 2026 | Cali, Colombia",
+    description: "Desarrollo frontend y backend para apps web y escritorio. Integración de OpenAI API, WebSockets. Diseño de componentes UI performantes, pipelines ETL y despliegue usando Docker.",
+    type: "work"
+  },
+  {
+    role: "Desarrollador Full Stack Freelance",
+    company: "AvanzaEmpleo",
+    period: "2024 | Remoto, Colombia",
+    description: "Plataforma de empleo: Implementé módulos de frontend en React y backend en Python. Desarrollé autenticación, perfiles, búsqueda y gestión de ofertas laborales.",
+    type: "work"
+  },
+  {
+    role: "Certificaciones Destacadas",
+    company: "Platzi",
+    period: "2025 - 2026",
+    description: "Claude Code, Prompt Engineering, Automatizaciones con n8n, AI para Devs, Frontend Developer, API REST con JS.",
+    type: "education"
+  },
+  {
     role: "Ingeniería en Sistemas",
     company: "Universidad Santiago de Cali",
     period: "2024 – Actual | Virtual, Colombia",
     description: "Estudiante activo, fundamentación en arquitectura de software y algoritmos avanzados.",
-    type: "education"
-  },
-  {
-    role: "Tecnología en Sistemas de Información",
-    company: "Universidad del Valle",
-    period: "2016 – 2021 | Palmira, Colombia",
-    description: "Programa académico culminado focalizado en ingeniería de software y programación.",
     type: "education"
   }
 ];

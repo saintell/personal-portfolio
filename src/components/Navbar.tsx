@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 
 import { throttle } from '../utils/throttle';
 
-const SECTIONS = ['home', 'stack', 'projects', 'experience'];
+const SECTIONS = ['home', 'stack', 'projects', 'experience', 'contact'];
 
 const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -84,7 +84,8 @@ const Navbar: React.FC = () => {
     { name: 'Inicio', href: '#home', icon: Home, id: 'home' },
     { name: 'Stack', href: '#stack', icon: Layers, id: 'stack' },
     { name: 'Proyectos', href: '#projects', icon: Folder, id: 'projects' },
-    { name: 'Info', href: '#experience', icon: User, id: 'experience' },
+    { name: 'Trayectoria', href: '#experience', icon: User, id: 'experience' },
+    { name: 'Contacto', href: '#contact', icon: MessageCircle, id: 'contact' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -134,15 +135,6 @@ const Navbar: React.FC = () => {
               </a>
             );
           })}
-          <div className="w-px h-6 bg-white/10 mx-1 hidden md:block" />
-          <a
-            href="https://wa.link/2dcjtp"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 rounded-full bg-[#25D366] text-white hover:bg-[#20bd5a] hover:scale-110 transition-all hidden md:block"
-          >
-            <MessageCircle className="w-4 h-4" />
-          </a>
         </nav>
       </div>
     </>

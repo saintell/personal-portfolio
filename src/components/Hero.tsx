@@ -258,12 +258,14 @@ const Hero: React.FC = () => {
       {/* Scroll Indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
-        <span className="uppercase tracking-widest font-mono text-[10px] text-white/30 animate-bounce">
+        <span className="uppercase tracking-[0.2em] font-mono text-[10px] text-white/50 animate-pulse">
           Scroll
         </span>
-        <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent"></div>
+        <div className="w-[1px] h-12 bg-white/10 relative overflow-hidden flex justify-center">
+          <div className="w-[1px] h-4 bg-accent absolute top-0 animate-scroll-indicator"></div>
+        </div>
       </div>
     </section>
   );

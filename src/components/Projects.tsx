@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { PROJECTS } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 import SpotlightCard from './SpotlightCard';
-import { motion } from 'motion/react';
-import { Code2, Cpu, Globe } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Code2, Cpu, Globe, X } from 'lucide-react';
 import { iconMapping } from './TechStack';
+import { Project } from '../types';
 
 const Projects: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const getCategoryIcon = (category: string) => {
     if (category.toLowerCase().includes('web')) return <Globe className="w-4 h-4" />;
@@ -40,6 +42,7 @@ const Projects: React.FC = () => {
               <motion.div
                 onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
+                onClick={() => setSelectedProject(project)}
                 whileHover={{ y: -8 }}
                 whileTap={{ scale: 0.98 }}
                 className="h-full relative group cursor-pointer"
@@ -90,7 +93,7 @@ const Projects: React.FC = () => {
                       </h3>
                     </div>
 
-                    <p className="text-secondary text-sm leading-relaxed mb-8 flex-grow line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                    <p className="text-secondary text-sm leading-relaxed mb-8 flex-grow line-clamp-3">
                       {project.description}
                     </p>
 
@@ -132,6 +135,86 @@ const Projects: React.FC = () => {
             scrollbar-width: none;
         }
       `}</style>
+      
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 sm:p-8 overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-10"
+              >
+                <X className="w-5 h-5 text-white/70" />
+              </button>
+
+              <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-accent/20 to-transparent opacity-50 blur-2xl pointer-events-none" />
+              
+              <div className="relative z-10 overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent">
+                    {getCategoryIcon(selectedProject.category)}
+                  </span>
+                  <span className="text-sm font-mono text-accent tracking-wider uppercase">
+                    {selectedProject.category}
+                  </span>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-6">
+                  {selectedProject.title}
+                </h2>
+                
+                <div className="text-secondary">
+                  <p className="text-lg text-white/90 leading-relaxed mb-6">
+                    {selectedProject.description}
+                  </p>
+                  
+                  {selectedProject.longDescription && (
+                    <div className="mb-6 space-y-4 text-white/70 leading-relaxed">
+                      {selectedProject.longDescription.split('\n').map((paragraph, i) => (
+                        <p key={i}>{paragraph}</p>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <div className="mt-8">
+                    <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Tecnologías Utilizadas</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="flex items-center gap-1.5 text-xs font-mono text-white/80 bg-white/10 px-3 py-1.5 rounded-full border border-white/5"
+                        >
+                          {iconMapping[tag] && (
+                            iconMapping[tag].customUrl ? (
+                              <img src={iconMapping[tag].customUrl} alt={tag} className="w-4 h-4" />
+                            ) : (
+                              <img src={`https://cdn.simpleicons.org/${iconMapping[tag].slug}/${iconMapping[tag].color.replace('#', '')}`} alt={tag} className="w-4 h-4" />
+                            )
+                          )}
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

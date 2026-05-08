@@ -14,6 +14,7 @@ export interface TechCategory {
 export interface Project {
   title: string;
   description: string;
+  longDescription?: string;
   tags: string[];
   category: string;
 }
