@@ -1,23 +1,35 @@
-import React, { useRef, useEffect } from 'react';
-import { ArrowRight, Linkedin, Download } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { ArrowRight, Linkedin, Download, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
 import ThreeBackground from './ThreeBackground';
 import { PERSONAL_INFO } from '../constants';
 
 const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const blob1Ref = useRef<HTMLDivElement>(null);
   const blob2Ref = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+  const cvMenuRef = useRef<HTMLDivElement>(null);
+
+  const [isCVMenuOpen, setIsCVMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cvMenuRef.current && !cvMenuRef.current.contains(event.target as Node)) {
+        setIsCVMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Initial states
-      gsap.set([badgeRef.current, nameRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
+      gsap.set([nameRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
         opacity: 0,
         y: 60,
       });
@@ -26,13 +38,6 @@ const Hero: React.FC = () => {
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out' },
         delay: 0.3,
-      });
-
-      // Badge animation
-      tl.to(badgeRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
       });
 
       // Name reveal with split effect
@@ -164,16 +169,7 @@ const Hero: React.FC = () => {
 
       <div className="max-w-5xl mx-auto px-6 w-full flex-1 flex flex-col justify-center">
         <div className="flex flex-col items-center text-center">
-          <div ref={badgeRef}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-secondary text-xs font-mono mb-8 backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-              </span>
-              Disponible para proyectos
-            </div>
-          </div>
-
+          {/* Badge removed as per user request */}
           <h1
             ref={nameRef}
             className="text-[10vw] sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 perspective-1000 leading-tight"
@@ -194,15 +190,40 @@ const Hero: React.FC = () => {
           </p>
 
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4">
-            <a
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              href={`${(import.meta as any).env.BASE_URL}CV_Santiago_Andres_Pineda.pdf`}
-              download="CV – Santiago Andrés Pineda.pdf"
-              className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              Descargar CV
-              <Download className="ml-2 w-4 h-4 group-hover:translate-y-1 transition-transform" />
-            </a>
+            <div className="relative" ref={cvMenuRef}>
+              <button
+                onClick={() => setIsCVMenuOpen(!isCVMenuOpen)}
+                className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                Descargar CV
+                <ChevronDown className={`ml-2 w-4 h-4 transition-transform ${isCVMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isCVMenuOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 rounded-2xl bg-[#1e1e1e]/90 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden z-50 flex flex-col py-2 origin-top animate-in fade-in slide-in-from-top-2 duration-200 lg:left-1/2 lg:-translate-x-1/2">
+                  <a
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    href={`${(import.meta as any).env.BASE_URL}CV_Santiago_Pineda.pdf`}
+                    download="CV – Santiago Pineda.pdf"
+                    onClick={() => setIsCVMenuOpen(false)}
+                    className="px-4 py-3 mx-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
+                  >
+                    Español
+                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
+                  </a>
+                  <a
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    href={`${(import.meta as any).env.BASE_URL}CV_Santiago_Pineda_EN.pdf`}
+                    download="CV – Santiago Pineda EN.pdf"
+                    onClick={() => setIsCVMenuOpen(false)}
+                    className="px-4 py-3 mx-1 mt-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
+                  >
+                    Inglés
+                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
+                  </a>
+                </div>
+              )}
+            </div>
             <a
               href="#projects"
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
