@@ -21,9 +21,9 @@ const Contact: React.FC = () => {
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
+            start: 'top 50%',
             end: 'top 30%',
-            scrub: 1.5,
+            scrub: true,
           }
         });
       }
@@ -35,9 +35,9 @@ const Contact: React.FC = () => {
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
+            start: 'top 50%',
             end: 'top 30%',
-            scrub: 1.5,
+            scrub: true,
           }
         });
       }
@@ -45,9 +45,10 @@ const Contact: React.FC = () => {
       // Logo illumination
       if (logoRef.current) {
         ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top 30%', // Wait until the line reaches the logo
-          toggleClass: { targets: logoRef.current, className: 'logo-illuminated' },
+          trigger: logoRef.current,
+          start: 'top 52%', // Triggers as soon as the line approaches the logo's top area
+          onEnter: () => logoRef.current?.classList.add('logo-illuminated'),
+          onLeaveBack: () => logoRef.current?.classList.remove('logo-illuminated'),
         });
       }
     }, sectionRef);

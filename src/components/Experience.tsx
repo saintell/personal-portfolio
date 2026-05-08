@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Experience: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const glowLineRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -20,26 +21,28 @@ const Experience: React.FC = () => {
     let ctx: gsap.Context;
     // We delay slightly to ensure DOM gives us correct heights
     const timeout = setTimeout(() => {
-      if (glowLineRef.current && containerRef.current) {
+      if (glowLineRef.current && timelineRef.current) {
         ctx = gsap.context(() => {
           gsap.to(glowLineRef.current, {
             height: '100%',
             ease: 'none',
             scrollTrigger: {
-              trigger: containerRef.current,
+              trigger: timelineRef.current,
               start: 'top 50%',
-              end: 'bottom 80%',
-              scrub: 1.5, // Smooth lag effect
+              end: 'bottom 50%',
+              scrub: true, // Remove lag for precision
             }
           });
 
           // Toggle colored active state on the timeline nodes as the scroll passes
           itemRefs.current.forEach((item) => {
             if (item) {
+              const iconNode = item.querySelector('.timeline-node-icon');
               ScrollTrigger.create({
-                trigger: item,
-                start: 'top 50%', // Triggers around the same height the line passes
-                toggleClass: 'active-node',
+                trigger: iconNode || item,
+                start: 'top 52%', // Triggers as soon as the line touches the icon's top area
+                onEnter: () => item.classList.add('active-node'),
+                onLeaveBack: () => item.classList.remove('active-node'),
               });
             }
           });
@@ -69,7 +72,7 @@ const Experience: React.FC = () => {
           </div>
         </RevealOnScroll>
 
-        <div className="relative max-w-5xl mx-auto pb-32">
+        <div className="relative max-w-5xl mx-auto pb-32" ref={timelineRef}>
           {/* Main vertical line (Background) */}
           <div 
             className="absolute left-[28px] md:left-1/2 top-4 bottom-0 w-[2px] bg-white/5 -translate-x-1/2 rounded-t-full"
@@ -93,7 +96,7 @@ const Experience: React.FC = () => {
                   className="relative w-full group"
                 >
                   {/* Central Node/Icon */}
-                  <div className="absolute left-[28px] md:left-1/2 top-10 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-[#0a0a0a] border-2 border-white/10 group-hover:border-accent group-[.active-node]:border-accent shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_25px_rgba(0,210,135,0.5)] group-[.active-node]:shadow-[0_0_25px_rgba(0,210,135,0.5)] transition-all duration-500 group-hover:scale-110 group-[.active-node]:scale-110">
+                  <div className="timeline-node-icon absolute left-[28px] md:left-1/2 top-10 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-[#0a0a0a] border-2 border-white/10 group-hover:border-accent group-[.active-node]:border-accent shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_25px_rgba(0,210,135,0.5)] group-[.active-node]:shadow-[0_0_25px_rgba(0,210,135,0.5)] transition-all duration-500 group-hover:scale-110 group-[.active-node]:scale-110">
                     <Icon className="w-5 h-5 text-secondary group-hover:text-accent group-[.active-node]:text-accent transition-colors duration-500" />
                   </div>
 
