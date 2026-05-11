@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { TECH_STACK } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
-import { ChevronRight, ChevronLeft, X } from 'lucide-react';
+import { ChevronRight, ChevronLeft, X, Plus } from 'lucide-react';
 import { TechItem } from '../types';
 
 export const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
@@ -66,11 +66,16 @@ const TechIconItem = ({
 
   return (
     <button 
-      className="flex flex-col items-center gap-4 w-20 md:w-24 group cursor-pointer focus:outline-none"
+      className="relative flex flex-col items-center gap-4 w-20 md:w-24 group cursor-pointer focus:outline-none"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
+      {/* Indicator showing it's clickable */}
+      <div className="absolute -top-1 -right-1 md:right-1 w-5 h-5 bg-white/5 border border-white/10 rounded-full flex items-center justify-center opacity-40 group-hover:opacity-100 group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300 z-10 group-hover:-translate-y-2">
+        <Plus className="w-3 h-3 text-white/50 group-hover:text-accent transition-colors" />
+      </div>
+
       <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center group-hover:-translate-y-2 transition-transform duration-300">
          {iconUrl ? (
             <img 
@@ -154,10 +159,13 @@ const TechStack: React.FC = () => {
       <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full px-6 flex justify-between items-end max-w-6xl mx-auto z-10 pointer-events-none">
         <RevealOnScroll className="pointer-events-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Stack</h2>
-          <div className="flex items-center gap-4 mt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
             <p className="text-secondary">Herramientas y tecnologías</p>
-            <div className="bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm border border-white/5 text-xs text-white/50 font-mono">
-              {activeIndex + 1} / {TECH_STACK.length}
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">Haz clic en un elemento para detalles</p>
+              <div className="bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm border border-white/5 text-xs text-white/50 font-mono">
+                {activeIndex + 1} / {TECH_STACK.length}
+              </div>
             </div>
           </div>
         </RevealOnScroll>

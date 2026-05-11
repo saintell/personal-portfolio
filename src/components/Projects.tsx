@@ -3,7 +3,7 @@ import { PROJECTS } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 import SpotlightCard from './SpotlightCard';
 import { motion, AnimatePresence } from 'motion/react';
-import { Code2, Cpu, Globe, X } from 'lucide-react';
+import { Code2, Cpu, Globe, X, Plus } from 'lucide-react';
 import { iconMapping } from './TechStack';
 import { Project } from '../types';
 
@@ -27,7 +27,10 @@ const Projects: React.FC = () => {
         <RevealOnScroll>
           <div className="flex flex-col justify-start mb-16">
             <h2 className="text-3xl font-bold text-white mb-2">Proyectos</h2>
-            <p className="text-secondary">Casos de estudio y desarrollos recientes.</p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
+              <p className="text-secondary">Casos de estudio y desarrollos recientes.</p>
+              <p className="text-xs w-max text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">Haz clic en un proyecto para detalles</p>
+            </div>
           </div>
         </RevealOnScroll>
 
@@ -49,6 +52,11 @@ const Projects: React.FC = () => {
               >
                 <SpotlightCard className="h-full flex flex-col border border-white/5 bg-white/[0.02] backdrop-blur-md overflow-hidden relative">
                   
+                  {/* Indicator showing it's clickable */}
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-white/5 border border-white/10 rounded-full flex items-center justify-center opacity-40 group-hover:opacity-100 group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300 z-20 group-hover:-translate-y-1 group-hover:translate-x-1">
+                    <Plus className="w-4 h-4 text-white/50 group-hover:text-accent transition-colors" />
+                  </div>
+
                   {/* Abstract Visual Header */}
                   <div className="h-48 md:h-56 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden shrink-0 flex items-center justify-center">
                     <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
@@ -155,14 +163,14 @@ const Projects: React.FC = () => {
             >
               <button 
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-10"
+                className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50"
               >
                 <X className="w-5 h-5 text-white/70" />
               </button>
 
               <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-accent/20 to-transparent opacity-50 blur-2xl pointer-events-none" />
               
-              <div className="relative z-10 overflow-y-auto pr-2 custom-scrollbar">
+              <div className="relative z-10 overflow-y-auto pr-2 custom-scrollbar mt-10 sm:mt-6">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent">
                     {getCategoryIcon(selectedProject.category)}
