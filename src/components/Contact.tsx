@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const glowLineDesktopRef = useRef<HTMLDivElement>(null);
-  const glowLineMobileRef = useRef<SVGPathElement>(null);
+  const glowLineMobileRef = useRef<SVGRectElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Contact: React.FC = () => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 50%',
-            end: 'top 30%',
+            end: '+=128',
             scrub: true,
           }
         });
@@ -31,12 +31,12 @@ const Contact: React.FC = () => {
       // Mobile curved line
       if (glowLineMobileRef.current) {
         gsap.to(glowLineMobileRef.current, {
-          strokeDashoffset: 0,
+          attr: { height: 120 },
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 50%',
-            end: 'top 30%',
+            end: '+=128',
             scrub: true,
           }
         });
@@ -46,7 +46,7 @@ const Contact: React.FC = () => {
       if (logoRef.current) {
         ScrollTrigger.create({
           trigger: logoRef.current,
-          start: 'top 52%', // Triggers as soon as the line approaches the logo's top area
+          start: 'top 50%', // Triggers exactly when the line touches the top of the logo
           onEnter: () => logoRef.current?.classList.add('logo-illuminated'),
           onLeaveBack: () => logoRef.current?.classList.remove('logo-illuminated'),
         });
@@ -67,9 +67,14 @@ const Contact: React.FC = () => {
           className="hidden md:block absolute top-0 left-1/2 w-[2px] bg-accent -translate-x-1/2 shadow-[0_0_20px_rgba(0,210,135,0.7)] origin-top h-0" 
         />
 
-        {/* Mobile curved line container (Left edge at 52px, right edge at 50%) */}
-        <div className="md:hidden absolute top-0 left-[52px] right-1/2 h-full">
-          <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+        {/* Mobile curved line container (Left edge at 36px/44px, right edge at 50%) */}
+        <div className="md:hidden absolute top-0 left-[36px] sm:left-[44px] right-1/2 h-full overflow-visible">
+          <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+            <defs>
+              <clipPath id="mobileCurveClip">
+                 <rect ref={glowLineMobileRef} x="-50" y="-20" width="200" height="20" />
+              </clipPath>
+            </defs>
             <path 
               d="M 0 0 C 0 50, 100 50, 100 100" 
               fill="none" 
@@ -77,17 +82,16 @@ const Contact: React.FC = () => {
               strokeWidth="2" 
               vectorEffect="non-scaling-stroke" 
             />
-            <path 
-              ref={glowLineMobileRef}
-              d="M 0 0 C 0 50, 100 50, 100 100" 
-              fill="none" 
-              stroke="#00d287" 
-              strokeWidth="2" 
-              vectorEffect="non-scaling-stroke" 
-              strokeDasharray="150" 
-              strokeDashoffset="150"
-              style={{ filter: 'drop-shadow(0 0 8px rgba(0,210,135,0.7))' }}
-            />
+            <g clipPath="url(#mobileCurveClip)">
+              <path 
+                d="M 0 0 C 0 50, 100 50, 100 100" 
+                fill="none" 
+                stroke="#00d287" 
+                strokeWidth="2" 
+                vectorEffect="non-scaling-stroke"
+                style={{ filter: 'drop-shadow(0 0 12px rgba(0,210,135,0.8))' }}
+              />
+            </g>
           </svg>
         </div>
       </div>
