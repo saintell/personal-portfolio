@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Home, Layers, Folder, User, MessageCircle, Briefcase } from 'lucide-react';
+import { Home, Layers, Folder, User, MessageCircle, Briefcase, Globe } from 'lucide-react';
 import { gsap } from 'gsap';
 
 import { throttle } from '../utils/throttle';
+import { useLanguage } from '../context/LanguageContext';
 
 const SECTIONS = ['home', 'about', 'stack', 'projects', 'experience', 'contact'];
 
@@ -12,6 +13,8 @@ const Navbar: React.FC = () => {
   const lastScrollYRef = useRef(0);
   const navRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+  
+  const { lang, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     // Entrance animation
@@ -81,12 +84,12 @@ const Navbar: React.FC = () => {
   }, [isVisible]);
 
   const navLinks = [
-    { name: 'Inicio', href: '#home', icon: Home, id: 'home' },
-    { name: 'Sobre mí', href: '#about', icon: User, id: 'about' },
-    { name: 'Stack', href: '#stack', icon: Layers, id: 'stack' },
-    { name: 'Proyectos', href: '#projects', icon: Folder, id: 'projects' },
-    { name: 'Trayectoria', href: '#experience', icon: Briefcase, id: 'experience' },
-    { name: 'Contacto', href: '#contact', icon: MessageCircle, id: 'contact' },
+    { name: t('nav.home'), href: '#home', icon: Home, id: 'home' },
+    { name: t('nav.about'), href: '#about', icon: User, id: 'about' },
+    { name: t('nav.stack'), href: '#stack', icon: Layers, id: 'stack' },
+    { name: t('nav.projects'), href: '#projects', icon: Folder, id: 'projects' },
+    { name: t('nav.experience'), href: '#experience', icon: Briefcase, id: 'experience' },
+    { name: t('nav.contact'), href: '#contact', icon: MessageCircle, id: 'contact' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -118,7 +121,7 @@ const Navbar: React.FC = () => {
             const isActive = activeSection === link.id;
             return (
               <a
-                key={link.name}
+                key={link.id}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 aria-label={link.name}
@@ -131,12 +134,25 @@ const Navbar: React.FC = () => {
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-accent" />
                 )}
                 <Icon className={`w-4 h-4 md:block ${isActive ? 'stroke-2 text-accent' : 'stroke-[1.5]'}`} />
-                <span className={`text-sm font-medium ${isActive ? 'block' : 'hidden md:block'}`}>
+                <span className={`text-sm font-medium whitespace-nowrap ${isActive ? 'block' : 'hidden md:block'}`}>
                   {link.name}
                 </span>
               </a>
             );
           })}
+          
+          <div className="w-[1px] h-6 bg-white/10 mx-2 hidden md:block"></div>
+          
+          <button
+            onClick={toggleLanguage}
+            aria-label="Cambiar idioma / Change language"
+            className="relative px-3 py-2 transition-all duration-300 flex items-center justify-center gap-2 text-secondary hover:text-white hover:bg-white/5 rounded-full"
+          >
+            <Globe className="w-4 h-4 stroke-[1.5]" />
+            <span className="text-sm font-medium hidden md:block uppercase tracking-wider">
+              {lang === 'es' ? 'EN' : 'ES'}
+            </span>
+          </button>
         </nav>
       </div>
     </>

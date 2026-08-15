@@ -3,6 +3,7 @@ import { ArrowRight, Linkedin, Download, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
 import ThreeBackground from './ThreeBackground';
 import { PERSONAL_INFO } from '../constants';
+import { useLanguage } from '../context/LanguageContext';
 
 const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -14,6 +15,7 @@ const Hero: React.FC = () => {
   const blob2Ref = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const cvMenuRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   const [isCVMenuOpen, setIsCVMenuOpen] = useState(false);
 
@@ -198,14 +200,14 @@ const Hero: React.FC = () => {
             ref={subtitleRef}
             className="text-xl md:text-2xl font-medium text-accent mb-6 tracking-wide"
           >
-            Full Stack Developer | React · Angular · Python · FastAPI
+            {t('hero.subtitle')}
           </h2>
 
           <p
             ref={descRef}
             className="text-base md:text-lg text-secondary max-w-2xl leading-relaxed mb-10 font-light"
           >
-            Desarrollador de software enfocado en crear soluciones tecnológicas integrales. Mi experiencia abarca aplicaciones web y de escritorio, desarrollo de automatizaciones e integración de Inteligencia Artificial, uniendo arquitecturas backend robustas con interfaces modernas.
+            {t('hero.description')}
           </p>
 
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4">
@@ -216,7 +218,7 @@ const Hero: React.FC = () => {
                 aria-haspopup="true"
                 className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                Descargar CV
+                {t('hero.downloadCV')}
                 <ChevronDown className={`ml-2 w-4 h-4 transition-transform ${isCVMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -229,7 +231,7 @@ const Hero: React.FC = () => {
                     onClick={() => setIsCVMenuOpen(false)}
                     className="px-4 py-3 mx-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
                   >
-                    Español
+                    {t('hero.cvES')}
                     <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
                   </a>
                   <a
@@ -239,7 +241,7 @@ const Hero: React.FC = () => {
                     onClick={() => setIsCVMenuOpen(false)}
                     className="px-4 py-3 mx-1 mt-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
                   >
-                    Inglés
+                    {t('hero.cvEN')}
                     <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
                   </a>
                 </div>
@@ -249,7 +251,7 @@ const Hero: React.FC = () => {
               href="#projects"
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
             >
-              Ver Proyectos
+              {t('hero.viewProjects')}
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <div className="flex gap-2">

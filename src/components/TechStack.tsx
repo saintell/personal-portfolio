@@ -3,6 +3,7 @@ import { TECH_STACK } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 import { X, Plus } from 'lucide-react';
 import { TechItem } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 export const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
   'React 18': { slug: 'react', color: '#61DAFB' },
@@ -99,17 +100,18 @@ const TechIconItem = ({
 
 const TechStack: React.FC = () => {
   const [selectedTech, setSelectedTech] = useState<TechItem | null>(null);
+  const { t, lang } = useLanguage();
 
   return (
     <section id="stack" className="py-32 relative bg-background">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 mb-16 relative z-10">
         <RevealOnScroll>
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Stack <span className="text-accent">Tecnológico</span></h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{t('stack.title')} <span className="text-accent">{t('stack.highlight')}</span></h2>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-4">
-            <p className="text-secondary max-w-2xl text-lg">Herramientas, lenguajes y tecnologías con las que trabajo diariamente.</p>
+            <p className="text-secondary max-w-2xl text-lg">{t('stack.subtitle')}</p>
             <p className="text-xs text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full w-max mt-2 sm:mt-0">
-              Haz clic para detalles
+              {t('stack.clickDetails')}
             </p>
           </div>
         </RevealOnScroll>
@@ -132,7 +134,7 @@ const TechStack: React.FC = () => {
                   <div className="flex items-center gap-3 mb-8">
                     <category.icon className="w-6 h-6 text-accent" />
                     <h3 className="text-xl md:text-2xl font-bold uppercase tracking-widest text-white">
-                      {category.title}
+                      {lang === 'en' && t(`stack.categories.${category.title}`) !== `stack.categories.${category.title}` ? t(`stack.categories.${category.title}`) : category.title}
                     </h3>
                   </div>
                   
@@ -183,7 +185,7 @@ const TechStack: React.FC = () => {
               <h4 className="text-xl font-bold text-white">{selectedTech.name}</h4>
             </div>
             <p className="text-secondary leading-relaxed">
-              {selectedTech.description}
+              {lang === 'en' && t(['stack', 'items', selectedTech.name]) !== ['stack', 'items', selectedTech.name].join('.') ? t(['stack', 'items', selectedTech.name]) : selectedTech.description}
             </p>
           </div>
         </div>

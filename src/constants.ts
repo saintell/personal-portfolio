@@ -25,7 +25,7 @@ export const TECH_STACK: TechCategory[] = [
     icon: Code2,
     items: [
       { name: "React 18", description: "Construcción de interfaces de usuario interactivas, como el Asistente Digital AI y dashboards de ETL." },
-      { name: "Angular 17-20", description: "Desarrollo de portales empresariales modulares, como el API MOR para gestión de usuarios interactivos." },
+      { name: "Angular 17-20", description: "Desarrollo de portales empresariales modulares, como el Corporate User Portal para gestión de usuarios interactivos." },
       { name: "TypeScript", description: "Tipado estático en el frontend y backend (Node) para asegurar escalabilidad y calidad de código." },
       { name: "JavaScript", description: "Desarrollo dinámico, integración con APIs del navegador y scripts de validación complejos." },
       { name: "HTML", description: "Maquetación semántica y accesible para las distintas aplicaciones web." },
@@ -123,7 +123,7 @@ export const PROJECTS: Project[] = [
     tags: ["React 18", "Electron", "Python", "MongoDB"]
   },
   {
-    title: "API MOR",
+    title: "Corporate User Portal",
     description: "Frontend para portal de gestión de usuarios empresariales y asignación dinámica de roles en la organización.",
     longDescription: "Módulos empresariales desarrollados junto con Angular y backend .NET. Provee interfaces interactivas para gestionar usuarios y múltiples roles permitiendo un control de acceso robusto a lo largo de la organización.",
     category: "Enterprise",

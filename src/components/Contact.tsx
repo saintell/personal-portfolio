@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,7 @@ const Contact: React.FC = () => {
   const glowLineDesktopRef = useRef<HTMLDivElement>(null);
   const glowLineMobileRef = useRef<SVGRectElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLanguage();
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -120,13 +122,20 @@ const Contact: React.FC = () => {
 
         <RevealOnScroll delay={100}>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight max-w-3xl">
-            Construyamos soluciones <span className="text-accent italic font-semibold">robustas</span> para sistemas complejos.
+            {lang === 'en' ? (
+              <>Let's build <span className="text-accent italic font-semibold">robust</span> solutions for complex systems.</>
+            ) : (
+              <>Construyamos soluciones <span className="text-accent italic font-semibold">robustas</span> para sistemas complejos.</>
+            )}
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={200}>
           <p className="text-secondary text-lg sm:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Disponible para proyectos de desarrollo de software, plataformas web, dashboards, y arquitectura de sistemas.
+            {lang === 'en' ? 
+              "Available for software development projects, web platforms, dashboards, and system architecture." : 
+              "Disponible para proyectos de desarrollo de software, plataformas web, dashboards, y arquitectura de sistemas."
+            }
           </p>
         </RevealOnScroll>
 
@@ -138,7 +147,7 @@ const Contact: React.FC = () => {
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-bold rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto tracking-wide"
             >
-              CONVERSEMOS
+              {lang === 'en' ? 'LET\'S TALK' : 'CONVERSEMOS'}
               <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
             <a
@@ -147,7 +156,7 @@ const Contact: React.FC = () => {
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center px-8 py-4 text-sm font-bold rounded-full text-white bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-300 w-full sm:w-auto tracking-wide"
             >
-              VER LINKEDIN
+              {lang === 'en' ? 'VIEW LINKEDIN' : 'VER LINKEDIN'}
               <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform opacity-70 group-hover:opacity-100" />
             </a>
           </div>

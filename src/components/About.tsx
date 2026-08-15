@@ -2,12 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RevealOnScroll from './RevealOnScroll';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Add any complex animations here if needed,
@@ -24,7 +26,7 @@ const About: React.FC = () => {
       <div className="max-w-5xl mx-auto px-6 w-full relative z-10">
         <RevealOnScroll>
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-2">Sobre mí</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">{t('about.title')}</h2>
             <div className="w-12 h-1 bg-accent rounded-full mt-4"></div>
           </div>
         </RevealOnScroll>
@@ -38,17 +40,9 @@ const About: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
             
             <div className="space-y-6 text-base md:text-lg text-secondary/90 leading-relaxed font-light relative z-10">
-              <p>
-                Soy Desarrollador Full Stack con experiencia en la construcción de productos digitales integrales. En el frontend, me especializo en crear interfaces web y de escritorio modernas y eficientes utilizando <strong className="font-medium text-white">React, TypeScript, Angular y JavaScript</strong>, priorizando siempre la experiencia de usuario.
-              </p>
-              
-              <p>
-                En el backend, diseño APIs RESTful, arquitecturas escalables y gestión de bases de datos, trabajando fuertemente con <strong className="font-medium text-white">Python, FastAPI, Node.js y Docker</strong>. Además, desarrollo automatizaciones de procesos e integro soluciones con <strong className="font-medium text-white">Inteligencia Artificial (IA)</strong> para potenciar las capacidades de cada proyecto.
-              </p>
-              
-              <p>
-                Busco seguir aportando valor como Full Stack Developer en proyectos retadores, aplicando buenas prácticas de código limpio, despliegues eficientes y soluciones tecnológicas que resuelvan problemas complejos de negocio de extremo a extremo.
-              </p>
+              <p dangerouslySetInnerHTML={{ __html: t('about.p1') }} />
+              <p dangerouslySetInnerHTML={{ __html: t('about.p2') }} />
+              <p dangerouslySetInnerHTML={{ __html: t('about.p3') }} />
             </div>
           </div>
         </RevealOnScroll>

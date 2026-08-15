@@ -5,6 +5,7 @@ import SpotlightCard from './SpotlightCard';
 import { Briefcase, GraduationCap } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +14,7 @@ const Experience: React.FC = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
   const glowLineRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { t, lang } = useLanguage();
 
   // Use EXPERIENCE directly in the order defined in constants
   const sortedExperience = EXPERIENCE;
@@ -65,9 +67,9 @@ const Experience: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full grow" ref={containerRef}>
         <RevealOnScroll>
           <div className="mb-16 md:mb-24 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Trayectoria</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">{t('experience.title')}</h2>
             <p className="text-secondary max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-              Un recorrido cronológico a lo largo de mi evolución profesional y formación académica.
+              {t('experience.subtitle')}
             </p>
           </div>
         </RevealOnScroll>
@@ -110,17 +112,17 @@ const Experience: React.FC = () => {
 
                           <div className="flex flex-col gap-3 md:gap-4 relative z-10">
                             <div className="inline-flex items-center px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-accent/10 border border-accent/20 text-[10px] md:text-xs font-semibold tracking-wider text-accent self-start uppercase">
-                              {item.period}
+                              {lang === 'en' && t(['experience', 'items', item.role, 'period']) !== ['experience', 'items', item.role, 'period'].join('.') ? t(['experience', 'items', item.role, 'period']) : item.period}
                             </div>
                             <div className="mt-1 md:mt-2">
                               <h4 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 group-hover:text-accent group-[.active-node]:text-accent transition-colors duration-300">
-                                {item.role}
+                                {lang === 'en' && t(['experience', 'items', item.role, 'role']) !== ['experience', 'items', item.role, 'role'].join('.') ? t(['experience', 'items', item.role, 'role']) : item.role}
                               </h4>
                               <h5 className="text-white/60 font-medium tracking-wide text-xs md:text-sm mb-3 md:mb-4 uppercase">
                                 {item.company}
                               </h5>
                               <p className="text-secondary text-sm md:text-base leading-relaxed">
-                                {item.description}
+                                {lang === 'en' && t(['experience', 'items', item.role, 'desc']) !== ['experience', 'items', item.role, 'desc'].join('.') ? t(['experience', 'items', item.role, 'desc']) : item.description}
                               </p>
                             </div>
                           </div>

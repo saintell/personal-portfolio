@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Code2, Cpu, Globe, X, Plus } from 'lucide-react';
 import { iconMapping } from './TechStack';
 import { Project } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 const Projects: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const { t, lang } = useLanguage();
 
   const getCategoryIcon = (category: string) => {
     if (category.toLowerCase().includes('web')) return <Globe className="w-4 h-4" />;
@@ -26,10 +28,10 @@ const Projects: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <RevealOnScroll>
           <div className="flex flex-col justify-start mb-16">
-            <h2 className="text-3xl font-bold text-white mb-2">Proyectos</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">{t('projects.title')}</h2>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
-              <p className="text-secondary">Casos de estudio y desarrollos recientes.</p>
-              <p className="text-xs w-max text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">Haz clic en un proyecto para detalles</p>
+              <p className="text-secondary">{t('projects.subtitle')}</p>
+              <p className="text-xs w-max text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">{t('projects.clickDetails') || 'Haz clic en un proyecto para detalles'}</p>
             </div>
           </div>
         </RevealOnScroll>
@@ -102,7 +104,7 @@ const Projects: React.FC = () => {
                     </div>
 
                     <p className="text-secondary text-sm leading-relaxed mb-8 flex-grow line-clamp-3">
-                      {project.description}
+                      {lang === 'en' && t(['projects', 'items', project.title, 'desc']) !== ['projects', 'items', project.title, 'desc'].join('.') ? t(['projects', 'items', project.title, 'desc']) : project.description}
                     </p>
 
                     {/* Footer: Tags and CTA */}
@@ -187,12 +189,12 @@ const Projects: React.FC = () => {
                 
                 <div className="text-secondary">
                   <p className="text-lg text-white/90 leading-relaxed mb-6">
-                    {selectedProject.description}
+                    {lang === 'en' && t(['projects', 'items', selectedProject.title, 'desc']) !== ['projects', 'items', selectedProject.title, 'desc'].join('.') ? t(['projects', 'items', selectedProject.title, 'desc']) : selectedProject.description}
                   </p>
                   
-                  {selectedProject.longDescription && (
+                  {(lang === 'en' && t(['projects', 'items', selectedProject.title, 'long']) !== ['projects', 'items', selectedProject.title, 'long'].join('.') ? t(['projects', 'items', selectedProject.title, 'long']) : selectedProject.longDescription) && (
                     <div className="mb-6 space-y-4 text-white/70 leading-relaxed">
-                      {selectedProject.longDescription.split('\n').map((paragraph, i) => (
+                      {(lang === 'en' && t(['projects', 'items', selectedProject.title, 'long']) !== ['projects', 'items', selectedProject.title, 'long'].join('.') ? t(['projects', 'items', selectedProject.title, 'long']) : selectedProject.longDescription!).split('\n').map((paragraph, i) => (
                         <p key={i}>{paragraph}</p>
                       ))}
                     </div>
