@@ -9,8 +9,8 @@ import { TechCategory, Project, Experience } from './types';
 
 export const PERSONAL_INFO = {
   name: "Santiago Andrés Pineda",
-  role: "Software Developer — Frontend Full-Stack",
-  subtitle: "Desarrollador con más de 4 años construyendo aplicaciones web y de escritorio. Foco en Frontend (React, Angular) y experiencia sólida en Backend.",
+  role: "Full Stack Developer",
+  subtitle: "Desarrollador Full Stack con más de 4 años de experiencia. Creo aplicaciones web y de escritorio, diseño automatizaciones e integro Inteligencia Artificial (IA) para construir soluciones completas y escalables.",
   location: "Palmira, Colombia",
   linkedin: "https://www.linkedin.com/in/santiagopineda-dev",
   github: "https://github.com/saintell",

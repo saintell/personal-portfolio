@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Home, Layers, Folder, User, MessageCircle } from 'lucide-react';
+import { Home, Layers, Folder, User, MessageCircle, Briefcase } from 'lucide-react';
 import { gsap } from 'gsap';
 
 import { throttle } from '../utils/throttle';
 
-const SECTIONS = ['home', 'stack', 'projects', 'experience', 'contact'];
+const SECTIONS = ['home', 'about', 'stack', 'projects', 'experience', 'contact'];
 
 const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -82,9 +82,10 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Inicio', href: '#home', icon: Home, id: 'home' },
+    { name: 'Sobre mí', href: '#about', icon: User, id: 'about' },
     { name: 'Stack', href: '#stack', icon: Layers, id: 'stack' },
     { name: 'Proyectos', href: '#projects', icon: Folder, id: 'projects' },
-    { name: 'Trayectoria', href: '#experience', icon: User, id: 'experience' },
+    { name: 'Trayectoria', href: '#experience', icon: Briefcase, id: 'experience' },
     { name: 'Contacto', href: '#contact', icon: MessageCircle, id: 'contact' },
   ];
 
@@ -120,6 +121,7 @@ const Navbar: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
+                aria-label={link.name}
                 className={`relative px-4 py-2 transition-all duration-300 flex items-center gap-2 group ${isActive
                   ? 'text-white'
                   : 'text-secondary hover:text-white hover:bg-white/5 rounded-full'

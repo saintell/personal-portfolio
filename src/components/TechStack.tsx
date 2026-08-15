@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TECH_STACK } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
-import { ChevronRight, ChevronLeft, X, Plus } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 import { TechItem } from '../types';
 
 export const iconMapping: Record<string, { slug: string; color: string; customUrl?: string }> = {
@@ -98,151 +98,59 @@ const TechIconItem = ({
 };
 
 const TechStack: React.FC = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [selectedTech, setSelectedTech] = useState<TechItem | null>(null);
 
-  const scrollNext = () => {
-    if (scrollRef.current) {
-      const newIndex = Math.min(activeIndex + 1, TECH_STACK.length - 1);
-      const child = scrollRef.current.children[newIndex] as HTMLElement;
-      scrollRef.current.scrollTo({ left: child.offsetLeft, behavior: 'smooth' });
-    }
-  };
-
-  const scrollPrev = () => {
-    if (scrollRef.current) {
-      const newIndex = Math.max(activeIndex - 1, 0);
-      const child = scrollRef.current.children[newIndex] as HTMLElement;
-      scrollRef.current.scrollTo({ left: child.offsetLeft, behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute('data-index'));
-            setActiveIndex(index);
-          }
-        });
-      },
-      { root: scrollRef.current, threshold: 0.6 }
-    );
-
-    const children = scrollRef.current?.children;
-    if (children) {
-      Array.from(children).forEach((child) => observer.observe(child));
-    }
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (isHovered || selectedTech) return;
-
-    const timer = setInterval(() => {
-      if (scrollRef.current) {
-        const nextIndex = (activeIndex + 1) % TECH_STACK.length;
-        const child = scrollRef.current.children[nextIndex] as HTMLElement;
-        scrollRef.current.scrollTo({ left: child.offsetLeft, behavior: 'smooth' });
-      }
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, [activeIndex, isHovered, selectedTech]);
-
   return (
-    <section id="stack" className="min-h-[100dvh] flex flex-col justify-center relative bg-background">
-      {/* Header static */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full px-6 flex justify-between items-end max-w-6xl mx-auto z-10 pointer-events-none">
-        <RevealOnScroll className="pointer-events-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Stack</h2>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
-            <p className="text-secondary">Herramientas y tecnologías</p>
-            <div className="flex items-center gap-3">
-              <p className="text-xs text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">Haz clic en un elemento para detalles</p>
-              <div className="bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm border border-white/5 text-xs text-white/50 font-mono">
-                {activeIndex + 1} / {TECH_STACK.length}
-              </div>
-            </div>
+    <section id="stack" className="py-32 relative bg-background">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 mb-16 relative z-10">
+        <RevealOnScroll>
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Stack <span className="text-accent">Tecnológico</span></h2>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-4">
+            <p className="text-secondary max-w-2xl text-lg">Herramientas, lenguajes y tecnologías con las que trabajo diariamente.</p>
+            <p className="text-xs text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full w-max mt-2 sm:mt-0">
+              Haz clic para detalles
+            </p>
           </div>
         </RevealOnScroll>
-        
-        <div className="hidden md:flex gap-3 pointer-events-auto">
-          <button 
-            onClick={scrollPrev} 
-            disabled={activeIndex === 0} 
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-          >
-            <ChevronLeft className="w-5 h-5"/>
-          </button>
-          <button 
-            onClick={scrollNext} 
-            disabled={activeIndex === TECH_STACK.length - 1} 
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-          >
-            <ChevronRight className="w-5 h-5"/>
-          </button>
-        </div>
       </div>
 
-      <style>{`
-        div[data-scroll-container]::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-      <div 
-        ref={scrollRef}
-        data-scroll-container
-        className="flex w-full overflow-x-auto snap-x snap-mandatory pt-40 pb-20 items-center min-h-[70vh]"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {TECH_STACK.map((category, index) => {
-          return (
-            <div 
-              key={category.title} 
-              data-index={index}
-              className="w-full shrink-0 snap-center flex justify-center px-6 md:px-12 transition-opacity duration-700"
-              style={{ opacity: activeIndex === index ? 1 : 0.2 }}
-            >
-               <div className="w-full max-w-5xl flex flex-col md:flex-row gap-12 md:gap-16 items-center md:items-center">
-                  
-                  {/* Category Title Title */}
-                  <div className="text-center md:text-left shrink-0 md:min-w-40 mb-4 md:mb-0">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-br from-white to-white/20 pb-2">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {TECH_STACK.map((category, index) => {
+            // Make Frontend span 2 columns on large screens if we want, or just let them flow naturally.
+            // Frontend is index 0. It has 9 items. Let's make it span 2 columns on lg screens. 
+            const isLargeCategory = category.items.length > 6;
+            
+            return (
+              <RevealOnScroll key={category.title} delay={index * 100}>
+                <div 
+                  className={`bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-3xl p-6 md:p-8 transition-colors h-full ${
+                    isLargeCategory ? 'lg:col-span-2' : ''
+                  }`}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <category.icon className="w-6 h-6 text-accent" />
+                    <h3 className="text-xl md:text-2xl font-bold uppercase tracking-widest text-white">
                       {category.title}
                     </h3>
                   </div>
                   
-                  {/* Tech Grid */}
-                  <div className="flex flex-wrap justify-center flex-1 gap-x-8 gap-y-12">
+                  <div className="flex flex-wrap gap-x-6 gap-y-8">
                     {category.items.map((tech) => (
                       <TechIconItem 
                         key={tech.name} 
                         tech={tech} 
                         mapping={iconMapping[tech.name]} 
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
                         onClick={() => setSelectedTech(tech)}
                       />
                     ))}
                   </div>
-               </div>
-            </div>
-          );
-        })}
-      </div>
-      
-      {/* Mobile progress dots */}
-      <div className="absolute bottom-10 left-0 w-full flex justify-center gap-3 md:hidden z-10">
-        {TECH_STACK.map((_, idx) => (
-          <div 
-            key={idx}
-            className={`h-1.5 rounded-full transition-all duration-300 ${activeIndex === idx ? 'w-8 bg-white' : 'w-2 bg-white/20'}`}
-          />
-        ))}
+                </div>
+              </RevealOnScroll>
+            );
+          })}
+        </div>
       </div>
 
       {/* Tech Description Modal */}
@@ -252,14 +160,15 @@ const TechStack: React.FC = () => {
           onClick={() => setSelectedTech(null)}
         >
           <div 
-            className="bg-surface border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 duration-200"
+            className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 duration-200"
             onClick={e => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedTech(null)}
-              className="absolute top-4 right-4 text-secondary hover:text-white transition-colors"
+              aria-label="Cerrar detalles de la tecnología"
+              className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 text-white/70" />
             </button>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">

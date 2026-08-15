@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import About from './components/About';
 import TechStack from './components/TechStack';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         <Navbar />
         <main className="relative z-10">
           <Hero />
+          <About />
           <TechStack />
           <Projects />
           <Experience />

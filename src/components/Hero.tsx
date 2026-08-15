@@ -7,6 +7,7 @@ import { PERSONAL_INFO } from '../constants';
 const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const blob1Ref = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Initial states
-      gsap.set([nameRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
+      gsap.set([nameRef.current, subtitleRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
         opacity: 0,
         y: 60,
       });
@@ -68,6 +69,17 @@ const Hero: React.FC = () => {
         );
       }
 
+      // Subtitle
+      tl.to(
+        subtitleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        },
+        '-=0.4'
+      );
+
       // Description
       tl.to(
         descRef.current,
@@ -76,7 +88,7 @@ const Hero: React.FC = () => {
           y: 0,
           duration: 0.8,
         },
-        '-=0.4'
+        '-=0.6'
       );
 
       // CTA buttons
@@ -182,17 +194,26 @@ const Hero: React.FC = () => {
             </span>
           </h1>
 
+          <h2
+            ref={subtitleRef}
+            className="text-xl md:text-2xl font-medium text-accent mb-6 tracking-wide"
+          >
+            Full Stack Developer | React · Angular · Python · FastAPI
+          </h2>
+
           <p
             ref={descRef}
-            className="text-lg md:text-xl text-secondary max-w-2xl leading-relaxed mb-10 font-light"
+            className="text-base md:text-lg text-secondary max-w-2xl leading-relaxed mb-10 font-light"
           >
-            {PERSONAL_INFO.subtitle}
+            Desarrollador de software enfocado en crear soluciones tecnológicas integrales. Mi experiencia abarca aplicaciones web y de escritorio, desarrollo de automatizaciones e integración de Inteligencia Artificial, uniendo arquitecturas backend robustas con interfaces modernas.
           </p>
 
           <div ref={ctaRef} className="flex flex-wrap justify-center gap-4">
             <div className="relative" ref={cvMenuRef}>
               <button
                 onClick={() => setIsCVMenuOpen(!isCVMenuOpen)}
+                aria-expanded={isCVMenuOpen}
+                aria-haspopup="true"
                 className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Descargar CV
