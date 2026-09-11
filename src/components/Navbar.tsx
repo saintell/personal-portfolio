@@ -111,11 +111,11 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div
-        className="fixed top-0 left-0 w-full h-12 z-40 bg-transparent"
+        className="fixed top-0 left-0 right-0 h-12 z-40 bg-transparent"
         onMouseEnter={() => setIsVisible(true)}
       />
-      <div ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-        <nav className="flex items-center gap-1 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-full p-1.5 shadow-2xl shadow-black/50 ring-1 ring-white/5">
+      <div ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw]">
+        <nav className="flex items-center gap-0.5 sm:gap-1 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-full p-1.5 shadow-2xl shadow-black/50 ring-1 ring-white/5 overflow-x-auto no-scrollbar">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = activeSection === link.id;
@@ -125,7 +125,7 @@ const Navbar: React.FC = () => {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 aria-label={link.name}
-                className={`relative px-4 py-2 transition-all duration-300 flex items-center gap-2 group ${isActive
+                className={`relative px-2.5 sm:px-4 py-2 transition-all duration-300 flex items-center gap-1.5 sm:gap-2 group flex-shrink-0 ${isActive
                   ? 'text-white'
                   : 'text-secondary hover:text-white hover:bg-white/5 rounded-full'
                   }`}
@@ -141,15 +141,15 @@ const Navbar: React.FC = () => {
             );
           })}
           
-          <div className="w-[1px] h-6 bg-white/10 mx-2 hidden md:block"></div>
+          <div className="w-[1px] h-6 bg-white/10 mx-1 sm:mx-2 hidden sm:block flex-shrink-0"></div>
           
           <button
             onClick={toggleLanguage}
             aria-label="Cambiar idioma / Change language"
-            className="relative px-3 py-2 transition-all duration-300 flex items-center justify-center gap-2 text-secondary hover:text-white hover:bg-white/5 rounded-full"
+            className="relative px-2.5 sm:px-3 py-2 transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-secondary hover:text-white hover:bg-white/5 rounded-full flex-shrink-0"
           >
             <Globe className="w-4 h-4 stroke-[1.5]" />
-            <span className="text-sm font-medium hidden md:block uppercase tracking-wider">
+            <span className="text-sm font-medium hidden sm:block uppercase tracking-wider">
               {lang === 'es' ? 'EN' : 'ES'}
             </span>
           </button>
