@@ -1,77 +1,76 @@
-# Optimización SEO, Long-Tail Keywords y Datos Estructurados (JSON-LD)
+# Corrección de Colisión de Despliegues en GitHub Pages (Error HTTP 400)
 
-Este plan optimiza el posicionamiento orgánico (SEO) y la presentación en redes sociales del portafolio de **Santiago Andrés Pineda**, incorporando palabras clave de cola larga (*long-tail keywords*) bilingües centradas en desarrollo Full-Stack e integración de Inteligencia Artificial, tarjetas OpenGraph/Twitter y datos estructurados `Schema.org` (`Person` / `ProfilePage`).
+Este plan resuelve el error `Failed to create deployment (status: 400) ... due to in progress deployment` en GitHub Actions mediante control de concurrencia automática, configuración del entorno oficial `github-pages` y separación de las etapas de construcción (`build`) y publicación (`deploy`).
 
 ---
 
 ## Revisión del Usuario y Decisiones Confirmadas
 
 > [!IMPORTANT]
-> **Decisiones confirmadas para esta actualización:**
-> - **Estrategia de Idioma Bilingüe (ES + EN)**: Las etiquetas meta, títulos, descripciones y términos clave combinarán estratégicamente búsquedas en español e inglés para captar reclutadores y clientes tanto en LATAM/España como en mercados globales/remotos.
-> - **Alcance Completo de Metadatos y Datos Estructurados**: Además de `<title>`, `<meta name="description">` y `<meta name="keywords">` con términos *long-tail*, se incluirán etiquetas completas de **OpenGraph**, **Twitter Cards** (`summary_large_image`) y un bloque **JSON-LD (`Schema.org`)** describiendo el perfil profesional, habilidades y proyectos destacados.
+> **Decisiones confirmadas para el flujo de despliegue:**
+> - **Cancelación Automática de Despliegues en Curso (`cancel-in-progress: true`)**: Cuando se realiza un nuevo *push*, cualquier despliegue anterior que siga en cola o en ejecución dentro del grupo `"pages"` será cancelado automáticamente para dar paso a la versión más reciente sin errores de colisión `HTTP 400`.
+> - **Ramas de Producción (`main` / `master`)**: El despliegue automático se ejecutará únicamente al hacer *push* sobre las ramas principales (`main` o `master`) o manualmente mediante `workflow_dispatch`, evitando que commits intermedios en ramas de desarrollo disparen despliegues simultáneos que bloqueen la cola.
 
 ---
 
-## 1. Visión General y Propuesta de Valor
+## 1. Diagnóstico del Error y Causa Raíz
 
-- **Qué Hace**: Enriquece la cabecera del documento web con metadatos semánticos de alta especificidad técnica y marcado estructurado para motores de búsqueda (Google, Bing) y previsualizaciones enriquecidas en plataformas profesionales (LinkedIn, X/Twitter, Slack, WhatsApp).
-- **Audiencia Objetivo**: Reclutadores técnicos, líderes de ingeniería (CTOs, Tech Leads), clientes empresariales y motores de indexación que buscan especialistas en desarrollo Full-Stack con capacidad demostrada en arquitecturas de IA y automatización.
-- **Valor Principal**: Mejora la relevancia semántica frente a búsquedas específicas (*long-tail queries*) como *"Full Stack Developer AI Integration React Python FastAPI"*, *"Desarrollador Full Stack con integración de Inteligencia Artificial y LLMs"* o *"Ingeniero de Software Automatización RPA y Microservicios"*.
-
----
-
-## 2. Experiencia de Descubrimiento y Presentación en Buscadores
-
-- **Flujo de Indexación y Previsualización Social**:
-  1. **Resultados de Búsqueda (SERP)**: El título y la descripción presentan de forma directa el rol híbrido (*Full Stack & AI Engineer*), el stack principal (`React`, `Angular`, `Python`, `FastAPI`, `PostgreSQL`) y casos de uso reales (agentes IA, pipelines OCR, automatización empresarial).
-  2. **Tarjetas Sociales (LinkedIn / X / Mensajería)**: Al compartir el enlace del portafolio, se genera una tarjeta estructurada con título profesional, resumen de impacto y metadatos de autor.
-  3. **Rich Snippets (Schema.org JSON-LD)**: Los motores de búsqueda interpretan la entidad `ProfilePage` y `Person` con enlaces verificados (`sameAs` a GitHub y LinkedIn), credenciales académicas y catálogo de competencias (`knowsAbout`).
+- **Qué indica el error de la captura**:
+  - `HttpError: Deployment request failed for 568d016... due to in progress deployment. Please cancel 77c6b58... first or wait for it to complete.`
+  - GitHub Pages solo permite **un despliegue activo a la vez** por repositorio. Si se envían dos commits seguidos (o si un despliegue previo quedó colgado esperando recursos), el segundo intento choca contra el bloqueo del primero y la API de GitHub Pages rechaza la solicitud con `status: 400`.
+- **Por qué ocurría en la configuración actual**:
+  1. Faltaba el bloque `concurrency` con `group: "pages"` y `cancel-in-progress: true`.
+  2. El paso de despliegue no declaraba el `environment: github-pages` requerido por `actions/deploy-pages@v4` para gestionar el ciclo de vida y las URLs de entorno.
+  3. Ejecutar `build` y `deploy` en un único trabajo sin aislamiento de entorno impedía cancelar limpiamente un despliegue en espera cuando llegaba un nuevo commit.
 
 ---
 
-## 3. Decisiones Clave de SEO y Arquitectura Semántica
-
-- **Decisión 1: Selección de Long-Tail Keywords de Alta Intención Técnica**
-  - *Enfoque Elegido*: Integrar combinaciones específicas de rol + tecnología + solución de negocio en lugar de términos genéricos aislados.
-  - *Términos Clave Incorporados*:
-    - **IA & Automatización**: `AI integration developer`, `LLM & Gemini API integration`, `enterprise AI agents development`, `automated OCR document processing Python`, `integración de inteligencia artificial en aplicaciones web`, `automatización de procesos RPA y flujos empresariales`.
-    - **Full-Stack & Arquitectura**: `Full Stack Developer React Angular Python FastAPI`, `scalable microservices and REST API architecture`, `PostgreSQL database optimization`, `desarrollador web full stack Colombia remoto`, `arquitectura de software empresarial y aplicaciones de escritorio`.
-  - *Por Qué*: Los términos genéricos (*"Web Developer"*) tienen alta competencia y baja conversión; las frases *long-tail* conectan directamente con vacantes y proyectos que requieren exactamente la intersección entre ingeniería Full-Stack e IA aplicada.
-
-- **Decisión 2: Sincronización de Identidad y Metadatos de Aplicación**
-  - *Enfoque Elegido*: Mantener alineados los títulos y descripciones principales entre el punto de entrada HTML y la configuración de metadatos del proyecto.
-  - *Por Qué*: Garantiza consistencia en todos los canales de distribución y previsualización sin afectar el rendimiento de carga inicial.
-
----
-
-## 4. Arquitectura Técnica de Metadatos *(Referencia Técnica)*
+## 2. Arquitectura del Flujo de CI/CD Optimizado
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    Cabecera HTML & Metadatos Globales                   │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌───────────────────────────────────────────────────────────────────┐  │
-│  │ 1. Core SEO & Long-Tail Keywords (Bilingüe ES / EN)               │  │
-│  │    • <title> optimizado con rol y stack clave                     │  │
-│  │    • <meta name="description"> orientada a soluciones e impacto   │  │
-│  │    • <meta name="keywords"> con frases long-tail Full-Stack + IA  │  │
-│  │    • <meta name="author">, <meta name="robots">                   │  │
-│  └─────────────────────────────────┬─────────────────────────────────┘  │
-│                                    │                                    │
-│  ┌─────────────────────────────────▼─────────────────────────────────┐  │
-│  │ 2. Social Graph (OpenGraph & Twitter / X Cards)                   │  │
-│  │    • og:title, og:description, og:type, og:site_name, og:locale   │  │
-│  │    • twitter:card (summary_large_image), twitter:title/desc       │  │
-│  └─────────────────────────────────┬─────────────────────────────────┘  │
-│                                    │                                    │
-│  ┌─────────────────────────────────▼─────────────────────────────────┐  │
-│  │ 3. Datos Estructurados Schema.org (JSON-LD)                       │  │
-│  │    • @type: ProfilePage -> mainEntity: Person (Santiago Pineda)   │  │
-│  │    • jobTitle: Full Stack Developer & AI Integration Engineer     │  │
-│  │    • knowsAbout: Full-Stack, AI Agents, FastAPI, React, Angular   │  │
-│  │    • sameAs: Perfiles oficiales de GitHub y LinkedIn              │  │
-│  └───────────────────────────────────────────────────────────────────┘  │
+│                   Evento: Push (main / master) o Manual                 │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│              Control de Concurrencia Global (group: "pages")            │
+│   • Si existe una ejecución previa activa -> La cancela automáticamente │
+│   • Garantiza que solo 1 versión compita por el entorno GitHub Pages    │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         Job 1: Build & Package                          │
+│   1. Checkout del repositorio                                           │
+│   2. Configuración de Node 20 con caché de dependencias npm             │
+│   3. Instalación limpia (npm ci) y compilación de producción            │
+│   4. Empaquetado y subida del artefacto estático para Pages             │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                  Job 2: Deploy (needs: build)                           │
+│   • Entorno: github-pages (expone la URL pública resultante)            │
+│   • Publicación atómica mediante actions/deploy-pages@v4                │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 3. Decisiones Técnicas y Beneficios
+
+- **Decisión 1: Grupo de Concurrencia `"pages"` con `cancel-in-progress: true`**
+  - *Enfoque Elegido*: Declarar a nivel de flujo el grupo de concurrencia `"pages"` con cancelación inmediata de ejecuciones previas.
+  - *Por Qué*: Elimina de raíz el conflicto `HTTP 400 due to in progress deployment` cuando se hacen varios cambios seguidos.
+
+- **Decisión 2: Separación en Dos Jobs (`build` + `deploy`) con Caché de NPM**
+  - *Enfoque Elegido*: Dividir la compilación y el despliegue en dos etapas encadenadas (`needs: build`) y activar `cache: 'npm'` en la configuración de Node.
+  - *Por Qué*: Acelera el tiempo de construcción y sigue la arquitectura recomendada oficialmente por GitHub para `actions/deploy-pages@v4`.
+
+- **Decisión 3: Limpieza de Capturas Temporales**
+  - *Enfoque Elegido*: Eliminar del directorio público la imagen temporal adjuntada durante el diagnóstico para no incluir archivos innecesarios en el paquete de producción.
+
+> [!NOTE]
+> **Nota sobre el despliegue `77c6b58...` actualmente bloqueado en GitHub**:
+> Si en la pestaña **Actions** de tu repositorio de GitHub aún aparece una ejecución antigua girando como *"In progress"*, cancélala manualmente una única vez desde el botón **Cancel workflow** en GitHub. A partir de este cambio, el nuevo bloque de concurrencia se encargará de cancelar automáticamente cualquier ejecución previa en futuros *pushes*.

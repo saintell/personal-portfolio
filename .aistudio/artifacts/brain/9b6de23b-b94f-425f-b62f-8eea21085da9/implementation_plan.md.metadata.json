@@ -1,6 +1,6 @@
 {
-  "summary": "Implementation plan for optimizing SEO meta tags, bilingual long-tail keywords, OpenGraph/Twitter social cards, and Schema.org JSON-LD structured data for Full-Stack Development and AI Integration.",
-  "updatedAt": "2026-11-04T18:49:06.780359126Z",
+  "summary": "Implementation plan to fix the GitHub Pages deployment HTTP 400 concurrency collision error by adding concurrency control, official environment configuration, and separating build and deploy jobs.",
+  "updatedAt": "2026-11-04T19:01:43.773751320Z",
   "requestFeedback": true,
   "userFacing": true
 }
