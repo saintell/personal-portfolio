@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Home, Layers, Folder, User, MessageCircle, Briefcase, Globe } from 'lucide-react';
+import { Home, Layers, Folder, User, MessageCircle, Briefcase, Globe, Sun, Moon } from 'lucide-react';
 import { gsap } from 'gsap';
 
 import { throttle } from '../utils/throttle';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 
 const SECTIONS = ['home', 'about', 'stack', 'projects', 'experience', 'contact'];
 
@@ -15,6 +16,7 @@ const Navbar: React.FC = () => {
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
   
   const { lang, toggleLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     // Entrance animation
@@ -115,7 +117,7 @@ const Navbar: React.FC = () => {
         onMouseEnter={() => setIsVisible(true)}
       />
       <div ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw]">
-        <nav className="flex items-center gap-0.5 sm:gap-1 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-full p-1.5 shadow-2xl shadow-black/50 ring-1 ring-white/5 overflow-x-auto no-scrollbar">
+        <nav className="flex items-center gap-0.5 sm:gap-1 bg-surface/85 backdrop-blur-xl border border-border rounded-full p-1.5 shadow-2xl shadow-black/10 dark:shadow-black/50 ring-1 ring-border/50 overflow-x-auto no-scrollbar">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = activeSection === link.id;
@@ -126,31 +128,50 @@ const Navbar: React.FC = () => {
                 onClick={(e) => handleNavClick(e, link.href)}
                 aria-label={link.name}
                 className={`relative px-2.5 sm:px-4 py-2 transition-all duration-300 flex items-center gap-1.5 sm:gap-2 group flex-shrink-0 ${isActive
-                  ? 'text-white'
-                  : 'text-secondary hover:text-white hover:bg-white/5 rounded-full'
+                  ? 'text-primary font-semibold'
+                  : 'text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-full'
                   }`}
               >
                 {isActive && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-accent" />
                 )}
                 <Icon className={`w-4 h-4 md:block ${isActive ? 'stroke-2 text-accent' : 'stroke-[1.5]'}`} />
-                <span className={`text-sm font-medium whitespace-nowrap ${isActive ? 'block' : 'hidden md:block'}`}>
+                <span className={`text-sm whitespace-nowrap ${isActive ? 'block' : 'hidden md:block'}`}>
                   {link.name}
                 </span>
               </a>
             );
           })}
           
-          <div className="w-[1px] h-6 bg-white/10 mx-1 sm:mx-2 hidden sm:block flex-shrink-0"></div>
+          <div className="w-[1px] h-6 bg-border mx-1 sm:mx-1.5 hidden sm:block flex-shrink-0"></div>
           
+          {/* Language Switcher */}
           <button
             onClick={toggleLanguage}
             aria-label="Cambiar idioma / Change language"
-            className="relative px-2.5 sm:px-3 py-2 transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-secondary hover:text-white hover:bg-white/5 rounded-full flex-shrink-0"
+            className="relative px-2.5 sm:px-3 py-2 transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-full flex-shrink-0"
+            title={lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}
           >
             <Globe className="w-4 h-4 stroke-[1.5]" />
             <span className="text-sm font-medium hidden sm:block uppercase tracking-wider">
               {lang === 'es' ? 'EN' : 'ES'}
+            </span>
+          </button>
+
+          {/* Theme Toggle Switcher */}
+          <button
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? (lang === 'es' ? 'Cambiar a modo claro' : 'Switch to light mode') : (lang === 'es' ? 'Cambiar a modo oscuro' : 'Switch to dark mode')}
+            className="relative px-2.5 sm:px-3 py-2 transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-full flex-shrink-0"
+            title={theme === 'dark' ? (lang === 'es' ? 'Modo claro' : 'Light mode') : (lang === 'es' ? 'Modo oscuro' : 'Dark mode')}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 stroke-[1.5] text-amber-400 hover:rotate-45 transition-transform" />
+            ) : (
+              <Moon className="w-4 h-4 stroke-[1.5] text-indigo-600 hover:-rotate-12 transition-transform" />
+            )}
+            <span className="text-xs font-mono font-medium hidden sm:block">
+              {theme === 'dark' ? (lang === 'es' ? 'Claro' : 'Light') : (lang === 'es' ? 'Oscuro' : 'Dark')}
             </span>
           </button>
         </nav>

@@ -3,222 +3,309 @@ import { PROJECTS } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 import SpotlightCard from './SpotlightCard';
 import { motion, AnimatePresence } from 'motion/react';
-import { Code2, Cpu, Globe, X, Plus } from 'lucide-react';
+import {
+  Code2,
+  Cpu,
+  Globe,
+  X,
+  ArrowUpRight,
+  Layers,
+  Target,
+  CheckCircle2,
+  Sparkles,
+  Database,
+} from 'lucide-react';
 import { iconMapping } from './TechStack';
-import { Project } from '../types';
+import { Project, ProjectFilterCategory } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 
 const Projects: React.FC = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const { t, lang } = useLanguage();
+  const [activeFilter, setActiveFilter] = useState<'all' | ProjectFilterCategory>('all');
+  const { t } = useLanguage();
 
   const getCategoryIcon = (category: string) => {
-    if (category.toLowerCase().includes('web')) return <Globe className="w-4 h-4" />;
-    if (category.toLowerCase().includes('ai')) return <Cpu className="w-4 h-4" />;
+    const lower = category.toLowerCase();
+    if (lower.includes('ai')) return <Cpu className="w-4 h-4" />;
+    if (lower.includes('data') || lower.includes('monitoring') || lower.includes('security')) {
+      return <Database className="w-4 h-4" />;
+    }
+    if (lower.includes('web') || lower.includes('enterprise')) return <Globe className="w-4 h-4" />;
     return <Code2 className="w-4 h-4" />;
   };
 
+  const filteredProjects =
+    activeFilter === 'all'
+      ? PROJECTS
+      : PROJECTS.filter((project) => project.filterCategory === activeFilter);
+
+  const filterTabs: { id: 'all' | ProjectFilterCategory; label: string }[] = [
+    { id: 'all', label: t('projects.filters.all') },
+    { id: 'ai', label: t('projects.filters.ai') },
+    { id: 'enterprise', label: t('projects.filters.enterprise') },
+    { id: 'data', label: t('projects.filters.data') },
+  ];
+
+  const getProjectField = (
+    project: Project,
+    field: 'desc' | 'long' | 'challenge' | 'solution' | 'impact' | 'metric',
+    fallback: string
+  ) => {
+    const keyPath = ['projects', 'items', project.title, field];
+    const translated = t(keyPath);
+    return translated !== keyPath.join('.') ? translated : fallback;
+  };
+
   return (
-    <section id="projects" className="py-24 bg-surface/30 relative overflow-hidden">
-      {/* Decorative background blobs */}
+    <section id="projects" className="py-28 bg-surface/30 relative overflow-hidden">
       <div className="absolute top-40 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -z-10 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-indigo-500/5 rounded-full blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
         <RevealOnScroll>
-          <div className="flex flex-col justify-start mb-16">
-            <h2 className="text-3xl font-bold text-white mb-2">{t('projects.title')}</h2>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2">
-              <p className="text-secondary">{t('projects.subtitle')}</p>
-              <p className="text-xs w-max text-accent/70 font-mono uppercase tracking-wider bg-accent/10 px-3 py-1 rounded-full">{t('projects.clickDetails') || 'Haz clic en un proyecto para detalles'}</p>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
+            <div>
+              <h2 className="font-display text-3xl md:text-5xl font-bold text-primary tracking-tight mb-3">
+                {t('projects.title')} <span className="text-accent">{t('projects.highlight')}</span>
+              </h2>
+              <p className="text-secondary max-w-2xl text-base md:text-lg leading-relaxed">
+                {t('projects.subtitle')}
+              </p>
+            </div>
+
+            {/* Category Filter Bar */}
+            <div className="flex flex-wrap gap-2">
+              {filterTabs.map((tab) => {
+                const isActive = activeFilter === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveFilter(tab.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-mono tracking-wide transition-all duration-200 border ${
+                      isActive
+                        ? 'bg-primary text-background border-primary font-semibold shadow-sm'
+                        : 'bg-surface text-secondary border-border hover:text-primary hover:border-accent/40'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </RevealOnScroll>
 
-        {/* Mobile: Horizontal scroll snap. Desktop: Grid */}
-        <div className="flex overflow-x-auto pb-12 -mx-6 px-6 gap-6 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
-          {PROJECTS.map((project, index) => (
-            <RevealOnScroll 
-              key={index} 
-              delay={index * 100} 
-              className="w-[85vw] shrink-0 snap-center md:w-auto h-full"
-            >
-              <motion.div
-                onHoverStart={() => setHoveredIndex(index)}
-                onHoverEnd={() => setHoveredIndex(null)}
-                onClick={() => setSelectedProject(project)}
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.98 }}
-                className="h-full relative group cursor-pointer"
-              >
-                <SpotlightCard className="h-full flex flex-col border border-white/5 bg-white/[0.02] backdrop-blur-md overflow-hidden relative">
-                  
-                  {/* Indicator showing it's clickable */}
-                  <div className="absolute top-4 right-4 w-8 h-8 bg-white/5 border border-white/10 rounded-full flex items-center justify-center opacity-40 group-hover:opacity-100 group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300 z-20 group-hover:-translate-y-1 group-hover:translate-x-1">
-                    <Plus className="w-4 h-4 text-white/50 group-hover:text-accent transition-colors" />
-                  </div>
+        {/* Responsive Case Studies Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => {
+              const descText = getProjectField(project, 'desc', project.description);
+              const metricText = getProjectField(project, 'metric', project.highlightMetric);
 
-                  {/* Abstract Visual Header */}
-                  <div className="h-48 md:h-56 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden shrink-0 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
-                    
-                    {/* Animated shapes inside header */}
-                    <motion.div 
-                      className="absolute w-32 h-32 bg-accent/20 rounded-full blur-2xl"
-                      animate={{ 
-                        scale: hoveredIndex === index ? 1.5 : 1,
-                        opacity: hoveredIndex === index ? 0.8 : 0.3
-                      }}
-                      transition={{ duration: 0.5 }}
-                    />
-                    
-                    <motion.div
-                      className="relative z-10 w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm"
-                      animate={{ 
-                        rotate: hoveredIndex === index ? 10 : 0,
-                        scale: hoveredIndex === index ? 1.1 : 1
-                      }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <h3 className="text-3xl font-bold text-white/40 group-hover:text-accent transition-colors">
-                        {project.title.substring(0, 2).toUpperCase()}
-                      </h3>
-                    </motion.div>
-                  </div>
-
-                  {/* Content Body */}
-                  <div className="p-6 flex flex-col flex-grow relative z-10 bg-gradient-to-t from-surface via-surface/90 to-transparent">
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent/10 text-accent">
+              return (
+                <motion.div
+                  layout
+                  key={project.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={() => setSelectedProject(project)}
+                  whileHover={{ y: -6 }}
+                  className="h-full relative group cursor-pointer"
+                >
+                  <SpotlightCard className="h-full flex flex-col justify-between backdrop-blur-md overflow-hidden relative border border-border group-hover:border-accent/40 transition-colors">
+                    {/* Top Architecture & Metric Header */}
+                    <div className="p-6 pb-4 border-b border-border/70 bg-surface-hover/40 relative">
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent">
                           {getCategoryIcon(project.category)}
-                        </span>
-                        <span className="text-xs font-mono text-accent tracking-wider uppercase">
-                          {project.category}
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors leading-tight">
-                        {project.title}
-                      </h3>
-                    </div>
-
-                    <p className="text-secondary text-sm leading-relaxed mb-8 flex-grow line-clamp-3">
-                      {lang === 'en' && t(['projects', 'items', project.title, 'desc']) !== ['projects', 'items', project.title, 'desc'].join('.') ? t(['projects', 'items', project.title, 'desc']) : project.description}
-                    </p>
-
-                    {/* Footer: Tags and CTA */}
-                    <div className="mt-auto">
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono text-white/60 bg-white/5 px-2.5 py-1 rounded-full border border-white/5 group-hover:border-white/10 transition-colors"
-                          >
-                            {iconMapping[tag] && (
-                              iconMapping[tag].customUrl ? (
-                                <img src={iconMapping[tag].customUrl} alt={tag} className="w-3 h-3 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
-                              ) : (
-                                <img src={`https://cdn.simpleicons.org/${iconMapping[tag].slug}/${iconMapping[tag].color.replace('#', '')}`} alt={tag} className="w-3 h-3 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
-                              )
-                            )}
-                            {tag}
+                          <span className="text-[11px] font-mono uppercase tracking-wider font-medium">
+                            {project.category}
                           </span>
-                        ))}
+                        </div>
+
+                        {project.featured && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-border">
+                            <Sparkles className="w-3 h-3 text-accent" />
+                            {t('projects.caseStudyLabels.featured')}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="font-mono text-xs text-secondary truncate">
+                        {project.architecture}
                       </div>
                     </div>
-                  </div>
-                </SpotlightCard>
-              </motion.div>
-            </RevealOnScroll>
-          ))}
-        </div>
+
+                    {/* Content Body */}
+                    <div className="p-6 flex flex-col flex-grow justify-between bg-surface">
+                      <div>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <h3 className="font-display text-xl md:text-2xl font-bold text-primary group-hover:text-accent transition-colors leading-snug">
+                            {project.title}
+                          </h3>
+                          <div className="w-8 h-8 rounded-full bg-surface-hover border border-border flex items-center justify-center shrink-0 group-hover:bg-accent group-hover:text-background group-hover:border-accent transition-all">
+                            <ArrowUpRight className="w-4 h-4" />
+                          </div>
+                        </div>
+
+                        <p className="text-secondary text-sm leading-relaxed mb-5">
+                          {descText}
+                        </p>
+                      </div>
+
+                      <div className="mt-auto pt-4 border-t border-border/60">
+                        {/* Key Impact Pill */}
+                        <div className="flex items-center gap-2 text-xs font-mono text-primary mb-4 bg-surface-hover/80 px-3 py-2 rounded-xl border border-border">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0" />
+                          <span className="truncate">{metricText}</span>
+                        </div>
+
+                        {/* Tech Tags */}
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="flex items-center gap-1.5 text-[11px] font-mono text-secondary bg-surface-hover px-2.5 py-1 rounded-lg border border-border group-hover:border-accent/25 transition-colors"
+                            >
+                              {iconMapping[tag] &&
+                                (iconMapping[tag].customUrl ? (
+                                  <img
+                                    src={iconMapping[tag].customUrl}
+                                    alt={tag}
+                                    className="w-3 h-3"
+                                  />
+                                ) : (
+                                  <img
+                                    src={`https://cdn.simpleicons.org/${iconMapping[tag].slug}/${iconMapping[tag].color.replace('#', '')}`}
+                                    alt={tag}
+                                    className="w-3 h-3"
+                                  />
+                                ))}
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </SpotlightCard>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
       </div>
-      
-      {/* Hide scrollbar globally for this component */}
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-      `}</style>
-      
-      {/* Project Detail Modal */}
+
+      {/* Structured Case Study Modal */}
       <AnimatePresence>
         {selectedProject && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.96, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              exit={{ scale: 0.96, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 sm:p-8 overflow-hidden flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-3xl bg-surface border border-border rounded-3xl p-6 sm:p-8 md:p-10 overflow-hidden flex flex-col max-h-[90vh] shadow-2xl"
             >
-              <button 
+              <button
                 onClick={() => setSelectedProject(null)}
-                aria-label="Cerrar detalles del proyecto"
-                className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50"
+                aria-label={t('projects.close')}
+                className="absolute top-5 right-5 p-2.5 bg-surface-hover hover:bg-border/60 border border-border rounded-full transition-colors z-50 text-primary"
               >
-                <X className="w-5 h-5 text-white/70" />
+                <X className="w-5 h-5 text-secondary hover:text-primary" />
               </button>
 
-              <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-accent/20 to-transparent opacity-50 blur-2xl pointer-events-none" />
-              
-              <div className="relative z-10 overflow-y-auto pr-2 custom-scrollbar mt-10 sm:mt-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent">
-                    {getCategoryIcon(selectedProject.category)}
-                  </span>
-                  <span className="text-sm font-mono text-accent tracking-wider uppercase">
-                    {selectedProject.category}
-                  </span>
-                </div>
-                
-                <h2 className="text-3xl font-bold text-white mb-6">
-                  {selectedProject.title}
-                </h2>
-                
-                <div className="text-secondary">
-                  <p className="text-lg text-white/90 leading-relaxed mb-6">
-                    {lang === 'en' && t(['projects', 'items', selectedProject.title, 'desc']) !== ['projects', 'items', selectedProject.title, 'desc'].join('.') ? t(['projects', 'items', selectedProject.title, 'desc']) : selectedProject.description}
+              <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-accent/15 to-transparent opacity-60 blur-2xl pointer-events-none" />
+
+              <div className="relative z-10 overflow-y-auto pr-1 sm:pr-2 space-y-6">
+                {/* Header */}
+                <div>
+                  <div className="flex flex-wrap items-center gap-2.5 mb-3 pr-10">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs font-mono text-accent uppercase tracking-wider">
+                      {getCategoryIcon(selectedProject.category)}
+                      {selectedProject.category}
+                    </span>
+                    <span className="text-xs font-mono text-secondary bg-surface-hover px-3 py-1 rounded-full border border-border">
+                      {selectedProject.architecture}
+                    </span>
+                  </div>
+
+                  <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary tracking-tight">
+                    {selectedProject.title}
+                  </h2>
+                  <p className="text-secondary text-base mt-2 leading-relaxed">
+                    {getProjectField(selectedProject, 'desc', selectedProject.description)}
                   </p>
-                  
-                  {(lang === 'en' && t(['projects', 'items', selectedProject.title, 'long']) !== ['projects', 'items', selectedProject.title, 'long'].join('.') ? t(['projects', 'items', selectedProject.title, 'long']) : selectedProject.longDescription) && (
-                    <div className="mb-6 space-y-4 text-white/70 leading-relaxed">
-                      {(lang === 'en' && t(['projects', 'items', selectedProject.title, 'long']) !== ['projects', 'items', selectedProject.title, 'long'].join('.') ? t(['projects', 'items', selectedProject.title, 'long']) : selectedProject.longDescription!).split('\n').map((paragraph, i) => (
-                        <p key={i}>{paragraph}</p>
-                      ))}
+                </div>
+
+                {/* Case Study 3-Block Grid: Challenge / Solution / Impact */}
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="p-5 rounded-2xl bg-surface-hover/60 border border-border">
+                    <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent mb-2">
+                      <Target className="w-4 h-4" />
+                      <span>{t('projects.caseStudyLabels.challenge')}</span>
                     </div>
-                  )}
-                  
-                  <div className="mt-8">
-                    <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Tecnologías Utilizadas</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="flex items-center gap-1.5 text-xs font-mono text-white/80 bg-white/10 px-3 py-1.5 rounded-full border border-white/5"
-                        >
-                          {iconMapping[tag] && (
-                            iconMapping[tag].customUrl ? (
-                              <img src={iconMapping[tag].customUrl} alt={tag} className="w-4 h-4" />
-                            ) : (
-                              <img src={`https://cdn.simpleicons.org/${iconMapping[tag].slug}/${iconMapping[tag].color.replace('#', '')}`} alt={tag} className="w-4 h-4" />
-                            )
-                          )}
-                          {tag}
-                        </span>
-                      ))}
+                    <p className="text-sm sm:text-base text-primary/90 leading-relaxed">
+                      {getProjectField(selectedProject, 'challenge', selectedProject.challenge)}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-surface-hover/60 border border-border">
+                    <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent mb-2">
+                      <Layers className="w-4 h-4" />
+                      <span>{t('projects.caseStudyLabels.solution')}</span>
                     </div>
+                    <p className="text-sm sm:text-base text-primary/90 leading-relaxed">
+                      {getProjectField(selectedProject, 'solution', selectedProject.solution)}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-accent/5 border border-accent/25">
+                    <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent mb-2">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>{t('projects.caseStudyLabels.impact')}</span>
+                    </div>
+                    <p className="text-sm sm:text-base text-primary font-medium leading-relaxed">
+                      {getProjectField(selectedProject, 'impact', selectedProject.impact)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Technologies Used */}
+                <div className="pt-2">
+                  <h4 className="text-xs font-mono font-semibold text-secondary uppercase tracking-wider mb-3">
+                    {t('projects.caseStudyLabels.technologies')}
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="flex items-center gap-2 text-xs font-mono text-primary bg-surface-hover px-3.5 py-2 rounded-xl border border-border"
+                      >
+                        {iconMapping[tag] &&
+                          (iconMapping[tag].customUrl ? (
+                            <img src={iconMapping[tag].customUrl} alt={tag} className="w-4 h-4" />
+                          ) : (
+                            <img
+                              src={`https://cdn.simpleicons.org/${iconMapping[tag].slug}/${iconMapping[tag].color.replace('#', '')}`}
+                              alt={tag}
+                              className="w-4 h-4"
+                            />
+                          ))}
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { ArrowRight, Linkedin, Download, ChevronDown } from 'lucide-react';
+import { ArrowRight, Linkedin, Download, ChevronDown, Terminal } from 'lucide-react';
 import { gsap } from 'gsap';
 import ThreeBackground from './ThreeBackground';
 import { PERSONAL_INFO } from '../constants';
@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
@@ -31,80 +32,78 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Initial states
-      gsap.set([nameRef.current, subtitleRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
+      gsap.set([badgeRef.current, nameRef.current, subtitleRef.current, descRef.current, ctaRef.current, scrollIndicatorRef.current], {
         opacity: 0,
-        y: 60,
+        y: 50,
       });
 
-      // Animation timeline
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out' },
-        delay: 0.3,
+        delay: 0.25,
       });
 
-      // Name reveal with split effect
+      tl.to(badgeRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+      });
+
       tl.to(
         nameRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.9,
         },
         '-=0.5'
       );
 
-      // Animate individual letters
       if (nameRef.current) {
         const spans = nameRef.current.querySelectorAll('.letter');
         tl.from(
           spans,
           {
             opacity: 0,
-            y: 100,
+            y: 90,
             rotateX: -90,
             stagger: 0.02,
             duration: 0.8,
             ease: 'back.out(1.7)',
           },
-          '-=0.8'
+          '-=0.75'
         );
       }
 
-      // Subtitle
       tl.to(
         subtitleRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.7,
         },
         '-=0.4'
       );
 
-      // Description
       tl.to(
         descRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.7,
         },
-        '-=0.6'
+        '-=0.5'
       );
 
-      // CTA buttons
       tl.to(
         ctaRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.7,
         },
         '-=0.4'
       );
 
-      // Blob floating animations
       gsap.to(blob1Ref.current, {
         x: 20,
         y: -30,
@@ -125,7 +124,6 @@ const Hero: React.FC = () => {
         ease: 'sine.inOut',
       });
 
-      // Scroll Indicator Entrance
       tl.to(
         scrollIndicatorRef.current,
         {
@@ -133,10 +131,9 @@ const Hero: React.FC = () => {
           y: 0,
           duration: 0.8,
         },
-        '-=1'
+        '-=0.8'
       );
 
-      // Scroll Indicator ScrollTrigger
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current, {
           opacity: 0,
@@ -154,9 +151,6 @@ const Hero: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-
-
-  // Split text into spans for animation
   const splitText = (text: string) => {
     return text.split('').map((char, i) => (
       <span
@@ -177,35 +171,43 @@ const Hero: React.FC = () => {
     >
       <ThreeBackground />
 
-      {/* Background Blobs for specific GSAP animation */}
       <div ref={blob1Ref} className="absolute top-1/4 left-10 w-64 h-64 bg-accent/10 rounded-full blur-3xl -z-10 pointer-events-none" />
       <div ref={blob2Ref} className="absolute bottom-1/4 right-10 w-80 h-80 bg-accent/5 rounded-full blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 w-full flex-1 flex flex-col justify-center">
         <div className="flex flex-col items-center text-center">
-          {/* Badge removed as per user request */}
+          <div
+            ref={badgeRef}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/90 border border-border backdrop-blur-md mb-6 shadow-sm"
+          >
+            <Terminal className="w-3.5 h-3.5 text-accent" />
+            <span className="font-mono text-xs uppercase tracking-widest text-secondary">
+              {t('hero.badge')}
+            </span>
+          </div>
+
           <h1
             ref={nameRef}
-            className="text-[10vw] sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 perspective-1000 leading-tight"
+            className="font-display text-[11vw] sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-primary mb-5 perspective-1000 leading-[1.02]"
           >
-            <span className="block overflow-hidden pb-4">
+            <span className="block overflow-hidden pb-2">
               {splitText('Santiago')}
             </span>
-            <span className="block text-secondary overflow-hidden pb-4">
+            <span className="block text-secondary overflow-hidden pb-3">
               {splitText('Pineda.')}
             </span>
           </h1>
 
           <h2
             ref={subtitleRef}
-            className="text-xl md:text-2xl font-medium text-accent mb-6 tracking-wide"
+            className="text-base sm:text-lg md:text-xl font-mono font-medium text-accent mb-6 tracking-wide"
           >
             {t('hero.subtitle')}
           </h2>
 
           <p
             ref={descRef}
-            className="text-base md:text-lg text-secondary max-w-2xl leading-relaxed mb-10 font-light"
+            className="text-base md:text-lg text-secondary max-w-2xl leading-relaxed mb-10 font-normal"
           >
             {t('hero.description')}
           </p>
@@ -216,77 +218,69 @@ const Hero: React.FC = () => {
                 onClick={() => setIsCVMenuOpen(!isCVMenuOpen)}
                 aria-expanded={isCVMenuOpen}
                 aria-haspopup="true"
-                className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="group inline-flex items-center justify-center px-8 py-4 text-sm font-semibold rounded-full text-background bg-primary hover:opacity-90 transition-all duration-300 hover:scale-105 active:scale-95 shadow-md"
               >
                 {t('hero.downloadCV')}
                 <ChevronDown className={`ml-2 w-4 h-4 transition-transform ${isCVMenuOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {isCVMenuOpen && (
-                <div className="absolute top-full left-0 mt-2 w-48 rounded-2xl bg-[#1e1e1e]/90 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden z-50 flex flex-col py-2 origin-top animate-in fade-in slide-in-from-top-2 duration-200 lg:left-1/2 lg:-translate-x-1/2">
+                <div className="absolute top-full left-0 mt-2 w-52 rounded-2xl bg-surface/95 backdrop-blur-xl border border-border shadow-2xl overflow-hidden z-50 flex flex-col py-2 origin-top animate-in fade-in slide-in-from-top-2 duration-200 lg:left-1/2 lg:-translate-x-1/2">
                   <a
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     href={`${(import.meta as any).env.BASE_URL}CV_Santiago_Pineda.pdf`}
                     download="CV – Santiago Pineda.pdf"
                     onClick={() => setIsCVMenuOpen(false)}
-                    className="px-4 py-3 mx-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
+                    className="px-4 py-3 mx-1 rounded-xl text-sm text-secondary hover:text-primary hover:bg-surface-hover transition-colors flex items-center justify-between group/item"
                   >
                     {t('hero.cvES')}
-                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
+                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-0.5 transition-all" />
                   </a>
                   <a
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     href={`${(import.meta as any).env.BASE_URL}CV_Santiago_Pineda_EN.pdf`}
                     download="CV – Santiago Pineda EN.pdf"
                     onClick={() => setIsCVMenuOpen(false)}
-                    className="px-4 py-3 mx-1 mt-1 rounded-xl text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center justify-between group/item"
+                    className="px-4 py-3 mx-1 mt-1 rounded-xl text-sm text-secondary hover:text-primary hover:bg-surface-hover transition-colors flex items-center justify-between group/item"
                   >
                     {t('hero.cvEN')}
-                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-1 transition-all" />
+                    <Download className="w-4 h-4 opacity-50 group-hover/item:opacity-100 group-hover/item:translate-y-0.5 transition-all" />
                   </a>
                 </div>
               )}
             </div>
+
             <a
               href="#projects"
-              className="group inline-flex items-center justify-center px-8 py-4 text-sm font-medium rounded-full text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
+              className="group inline-flex items-center justify-center px-8 py-4 text-sm font-semibold rounded-full text-primary bg-surface border border-border hover:border-accent/40 hover:bg-surface-hover transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm shadow-sm"
             >
               {t('hero.viewProjects')}
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform text-accent" />
             </a>
+
             <div className="flex gap-2">
               <a
                 href={PERSONAL_INFO.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:scale-110 transition-all text-white"
+                className="p-4 rounded-full bg-surface border border-border hover:bg-surface-hover hover:border-accent/40 hover:scale-110 transition-all text-primary"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
-              {/* <a
-                href={PERSONAL_INFO.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 hover:scale-110 transition-all text-white"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a> */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <div
         ref={scrollIndicatorRef}
         className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
-        <span className="uppercase tracking-[0.2em] font-mono text-[10px] text-white/50 animate-pulse">
+        <span className="uppercase tracking-[0.2em] font-mono text-[10px] text-secondary animate-pulse">
           Scroll
         </span>
-        <div className="w-[1px] h-12 bg-white/10 relative overflow-hidden flex justify-center">
+        <div className="w-[1px] h-12 bg-border relative overflow-hidden flex justify-center">
           <div className="w-[1px] h-4 bg-accent absolute top-0 animate-scroll-indicator"></div>
         </div>
       </div>

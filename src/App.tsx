@@ -15,7 +15,7 @@ const ThreeBackground = lazy(() => import('./components/ThreeBackground'));
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-background text-primary selection:bg-white/20 selection:text-white overflow-x-hidden w-full relative">
+      <div className="min-h-screen bg-background text-primary selection:bg-accent/25 selection:text-primary overflow-x-hidden w-full relative">
         {/* Three.js Background */}
         <Suspense fallback={null}>
           <ThreeBackground />

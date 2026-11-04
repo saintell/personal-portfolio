@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,15 +9,16 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        background: '#050505',
-        surface: '#0a0a0a',
-        'surface-hover': '#121212',
-        border: '#27272a', // Zinc 800
-        primary: '#ffffff',
-        secondary: '#a1a1aa', // Zinc 400
+        background: 'var(--color-bg)',
+        surface: 'var(--color-surface)',
+        'surface-hover': 'var(--color-surface-hover)',
+        border: 'var(--color-border)',
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
         accent: '#00d287', // Vibrant Green
       },
       animation: {

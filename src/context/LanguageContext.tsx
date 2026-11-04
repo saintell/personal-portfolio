@@ -29,6 +29,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const t = (key: string | string[]): string => {
     const keys = Array.isArray(key) ? key : key.split('.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let current: any = translations[lang];
     for (const k of keys) {
       if (current[k] === undefined) {
